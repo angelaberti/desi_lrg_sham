@@ -1,0 +1,138 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c100000\c100000\c100000;\cssrgb\c0\c0\c0;}
+\margl1440\margr1440\vieww13000\viewh19040\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 High level question: How can we make the LRG sample as useful as the BGS sample given its much larger volume? (V_LRG = 20 x V_BGS)\
+\
+--what's been done so far (with other samples?)\
+--shortcomings of simple (model) constant SHMR for LRGs? (DESI LRG sample still much higher density than (e)BOSS sample)\
+--Relevant for small-scale clustering at higher redshifts than before?\
+--Jeremy's methods for small-scale clustering; sigma8 measurements (15% discrepancies with different methods)\
+\
+\
+\pard\pardeftab720\partightenfactor0
+\cf0 \expnd0\expndtw0\kerning0
+How strict an assumption is made about the completeness of the sample in terms of stellar mass?\
+Do authors assume sample captures all of the centrals at the high mass end of the halo distribution function?\
+--Lensing is low doesn't state any assumptions about stellar mass completeness\
+--Zu 2020 claims "lensing is low" discrepancy can be fully resolved on 1-halo scales (but not larger scales) by accounting for halo mass dependence of selection function, i.e. selection function of satellites varies as function of both stellar mass and halo mass\
+\
+DESI LRG mock study showing missed detections at high mass end of halo mass function (galaxies are too blue and missed by LRG cuts)\
+{\field{\*\fldinst{HYPERLINK "https://arxiv.org/abs/2006.00612"}}{\fldrslt https://arxiv.org/abs/2006.00612}}\
+\pard\pardeftab720\partightenfactor0
+\cf0 \
+Tinker et al: stellar-to-halo mass correlation for most massive galaxies in universe\
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://ui.adsabs.harvard.edu/abs/2017ApJ...839..121T/abstract"}}{\fldrslt \cf0 https://ui.adsabs.harvard.edu/abs/2017ApJ...839..121T/abstract}}\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \kerning1\expnd0\expndtw0 \
+Bates et al: stellar mass completeness estimates for BOSS galaxy samples\
+{\field{\*\fldinst{HYPERLINK "https://doi.org/10.1093/mnras/stz997"}}{\fldrslt https://doi.org/10.1093/mnras/stz997}}\
+\
+\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\
+Cosmology params from BOSS lensing vs clustering\expnd0\expndtw0\kerning0
+\
+\
+\pard\pardeftab720\partightenfactor0
+\cf0 Zhou et al 2020\
+DESI-like LRG clustering with photo-zs\
+{\field{\*\fldinst{HYPERLINK "https://ui.adsabs.harvard.edu/abs/2021MNRAS.501.3309Z/abstract"}}{\fldrslt https://ui.adsabs.harvard.edu/abs/2021MNRAS.501.3309Z/abstract}}\
+--Main goal to improve LRG sample HOD fits that use clustering measurements made with photo-zs\
+--Fit measured clustering (projected correlation wp) with HOD model; constrain HOD parameters by populating MDPL2 simulation with mock galaxies (Zheng et al 2007 method); emulate photo-z errors in mock by adding random Gaussian perturbations\
+--5 redshift bins from 0.4 < z < 0.9\
+\
+Leauthaud et al 2017\
+Lensing is low\
+{\field{\*\fldinst{HYPERLINK "https://doi.org/10.1093/mnras/stx258"}}{\fldrslt https://doi.org/10.1093/mnras/stx258}}\
+--Galaxy-galaxy lensing measurements with BOSS CMASS sample\
+--Compare lensing measurements with predictions from mocks that match observables (SMF and clustering of CMASS galaxies; Saito et al 2016, Rodr\'edguez-Torres et al 2016)\
+--CMASS stellar mass incompleteness accounted for in mocks by downsampling mock galaxies to according to stellar mass to match redshift-dependent CMASS SMFs; these mocks do *not* account for color incompleteness of CMASS sample\
+--CMASS clustering + standard galaxy-halo connection models (some SHAM and some HOD) predict lensing signal 20 to 40% larger than observational result\
+--Could the failure of (above) galaxy-halo connection models to predict lensing amplitudes be due to absence of galaxy assembly bias? (sec 5.4)\
+\
+Zu 2020\
+Response to lensing is low\
+{\field{\*\fldinst{HYPERLINK "https://arxiv.org/pdf/2010.01143.pdf"}}{\fldrslt https://arxiv.org/pdf/2010.01143.pdf}}\
+--HOD modeling of BOSS galaxies that accounts for halo mass-dependence of BOSS target selection (due to complex color cuts; sec. 3.2)\
+--Directly measure selection function of LOWZ sample centrals (from redMaPPer clusters) and find it is largely independent of halo mass at least in cluster mass range\
+--Develop 2D selection function for satellites: detection fraction declines from high completeness at high stellar mass to zero at low stellar mass; characteristic stellar mass and width of decline both dependent on host halo mass\
+--Possible explanations for low g-g lensing signal:\
+(1) p 2: g-g lensing signal limited to r < 10 Mpc/h, primarily measures 1-halo term which depends on (i) mean halo mass and (ii) satellite fraction; implies low g-g lensing signal could be caused by BOSS galaxies residing in lower concentration halos (assembly bias)\
+(2) improper modeling of spectroscopic selection function of BOSS galaxies: detection fraction of BOSS galaxies at fixed stellar mass should depend on halo properties strongly tied to galaxy colors\
+\
+\pard\pardeftab720\partightenfactor0
+\cf0 Lange et al 2019\
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://doi.org/10.1093/mnras/stz2124"}}{\fldrslt \cf0 https://doi.org/10.1093/mnras/stz2124}}\
+--Updated lensing is low analysis of BOSS samples; compare effects in low and high stellar mass bins\
+--Compare measurements to standard HOD and decorated HOD which allows for assembly bias (reduces to standard HOD model in absence of assembly bias)\
+--Conclusion: baryonic feedback + assembly bias + cosmological parameter revision may be needed to fully resolve lensing is low discrepancy\
+\
+Lange et al 2020\
+On the halo-mass and radial scale dependence of the lensing is low effect\
+{\field{\*\fldinst{HYPERLINK "https://arxiv.org/abs/2011.02377"}}{\fldrslt https://arxiv.org/abs/2011.02377}}\
+--BOSS LOWZ sample lensing amplitude mismatch of ~35% independent of halo mass (in 13.3-13.9 Msun/h range) and radial scale; suggests same physical origin of discrepancy on small and large radial scales\
+--Study of radial and stellar mass dependence of lensing amplitude disagreement\
+--Compare three stellar mass estimates: "Wisconsin" PCA, "Granada" photometry, and cross-correlations between DESI "Legacy" Imaging DR8 photometry and Stripe 82 Massive Galaxy Catalog galaxies with spec-zs\
+--Account for BOSS incompleteness via free model parameters\
+--Conclude lensing is low discrepancy likely has same physical origin at both small and large scales\
+\
+Yuan et al 2020a\
+Can assembly bias explain BOSS CMASS lensing is low issue?\
+{\field{\*\fldinst{HYPERLINK "https://doi.org/10.1093/mnras/staa634"}}{\fldrslt https://doi.org/10.1093/mnras/staa634}}\
+--No, at least not the assembly bias models investigated here\
+\
+Yuan et al 2020b\
+Evidence for galaxy AB in BOSS CMASS z-space galaxy correlation function\
+{\field{\*\fldinst{HYPERLINK "https://arxiv.org/abs/2010.04182"}}{\fldrslt https://arxiv.org/abs/2010.04182}}\
+--Halo concentration alone doesn't account for galaxy AB signal; what about environment?\
+--Propose HOD with both concentration- and environment-based AB terms\
+--Strong rejection of standard 5-param HOD\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \kerning1\expnd0\expndtw0 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\expnd0\expndtw0\kerning0
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardeftab720\pardirnatural\partightenfactor0
+\cf0 \kerning1\expnd0\expndtw0 DESI BGS SHAM mock\
+{\field{\*\fldinst{HYPERLINK "https://arxiv.org/abs/2009.00005"}}{\fldrslt https://arxiv.org/abs/2009.00005}}\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardeftab720\pardirnatural\partightenfactor0
+\cf0 DESI LRG selection\
+Legacy imaging overview: {\field{\*\fldinst{HYPERLINK "https://doi.org/10.3847/1538-3881/ab089d"}}{\fldrslt https://doi.org/10.3847/1538-3881/ab089d}}\
+Preliminary targeting: {\field{\*\fldinst{HYPERLINK "https://doi.org/10.3847/2515-5172/abc0f4"}}{\fldrslt https://doi.org/10.3847/2515-5172/abc0f4}}\
+LRG photo-zs: {\field{\*\fldinst{HYPERLINK "https://doi.org/10.1093/mnras/staa3764"}}{\fldrslt https://doi.org/10.1093/mnras/staa3764}}\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 DESI LRG projects\
+DR9 LRG photo-zs cross-correlation with CMB lensing:\
+{\field{\*\fldinst{HYPERLINK "https://desi.lbl.gov/desipub/app/PB/show_project?pid=97"}}{\fldrslt https://desi.lbl.gov/desipub/app/PB/show_project?pid=97}}\ul \
+{\field{\*\fldinst{HYPERLINK "https://desi.lbl.gov/desipub/app/PB/show_project?pid=70"}}{\fldrslt https://desi.lbl.gov/desipub/app/PB/show_project?pid=70}}\
+\ulnone DESI LRG SAM/HOD mock:\ul \
+{\field{\*\fldinst{HYPERLINK "https://desi.lbl.gov/desipub/app/PB/show_project?pid=26"}}{\fldrslt https://desi.lbl.gov/desipub/app/PB/show_project?pid=26}}\ulc0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardeftab720\pardirnatural\partightenfactor0
+\cf0 \ulnone \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardeftab720\pardirnatural\partightenfactor0
+\cf0 SHAM\expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://doi.org/10.1093/mnras/stt755"}}{\fldrslt \cf0 https://doi.org/10.1093/mnras/stt755}}\
+Primary calculation of z_starve for abundance matching: {\field{\*\fldinst{HYPERLINK "https://doi.org/10.1093/mnras/stt1374"}}{\fldrslt https://doi.org/10.1093/mnras/stt1374}}\
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://doi.org/10.1093/mnras/stu1443"}}{\fldrslt \cf0 https://doi.org/10.1093/mnras/stu1443}}\
+{\field{\*\fldinst{HYPERLINK "https://doi.org/10.1093/mnras/stv1091"}}{\fldrslt https://doi.org/10.1093/mnras/stv1091}}\
+\
+}
