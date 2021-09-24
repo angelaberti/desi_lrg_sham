@@ -4,3 +4,12 @@
 *.npy
 *.pyc
 
+*.ipynb_checkpoints/sandbox-checkpoint.ipynb
+*.ipynb_checkpoints/*
+
+clustering/
+data/
+figures/
+output.pdf
+synthetic_photometry_wilber.ipynb
+

@@ -18,7 +18,7 @@ def read_halocat(halocat_filepath, quiet=True):
 
         ## obtain metadata for table
         #colnums = (1,5,6,10,11,12,15,16,17,18,19,59,60,61,62,63,69,70,71,72,73,74)
-        colnums = (1,6,16,17,18,19,60,62,70,74)
+        colnums = (1,6,10,16,17,18,19,60,62,70,74)
         names = [colnames[i][:-4].lower() if (colnames[i][-4]=="(") else colnames[i][:-3].lower() for i in colnums]
         dtype = [int if (("id" in colnames[i].lower()) or ("?" in colnames[i])) else float for i in colnums]
 
