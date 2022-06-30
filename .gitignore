@@ -3,13 +3,17 @@
 *.DS_Store
 *.npy
 *.pyc
+*.aux
+*.log
+*.out
+*.gz
+*.pdf
+*.fits
 
 *.ipynb_checkpoints/sandbox-checkpoint.ipynb
 *.ipynb_checkpoints/*
 
-clustering/
-data/
 figures/
-output.pdf
+clustering/
 synthetic_photometry_wilber.ipynb
 

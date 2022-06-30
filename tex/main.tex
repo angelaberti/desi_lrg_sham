@@ -1,257 +1,368 @@
+\documentclass[twocolumn,apj,iop,tighten]{emulateapj2}
 
-\documentclass[10pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
-\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry} %, headsep=.15in, footskip=.3in]{geometry}
-\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
-%\geometry{landscape}                		% Activate for for rotated page geometry
-%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
-\usepackage{graphicx}				% Use pdf, png, jpg, or epsÂ§ with pdflatex; use eps in DVI mode
-								% TeX will automatically convert eps --> pdf in pdflatex		
-\usepackage{xspace}
-\usepackage{amssymb}
-\usepackage{amsmath}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{xfrac}
+\usepackage{adjustbox}
+\usepackage{upgreek}
 
-\usepackage{setspace}
 
-\usepackage{natbib}
-\setlength{\bibsep}{0pt}
-
-\bibliographystyle{aasjournal}
-\usepackage[colorlinks,citecolor=blue]{hyperref}
-%\usepackage[style=authoryear,natbib=true]{biblatex}
-
-\newcommand{\degsq}{\ensuremath{{\rm deg}^2}\xspace}
-\newcommand{\logm}{\ensuremath{\log(M_*/\msun)}\xspace}
-\newcommand{\mh}{\ensuremath{M_{\rm h}}\xspace}
-\newcommand{\msun}{\ensuremath{{\rm M}_\odot}\xspace}
-\newcommand{\Mpch}{\ensuremath{h^{-1}{\rm Mpc}}\xspace}
-\newcommand{\wprp}{\ensuremath{\omega_{\rm p}(r_{\rm p})}\xspace}
-
-\newcommand{\aj}{AJ}
-\newcommand{\apj}{ApJ}
-\newcommand{\apjs}{ApJS}
-\newcommand{\mnras}{MNRAS}
-
-\title{Motivation for assessing biases of the DESI LRG sample with SHAM-based mocks + age matching}
-\author{Angela Berti}
-\date{}							% Activate to display a given date or no date
+\input{../../tex/defs}
 
 \begin{document}
-\maketitle
-%\section{}
-%\subsection{}
+\title{}
+\shortauthors{Berti et al.}
 
-%High level question:\ How can we make the LRG sample as useful as the BGS sample given its much larger volume?
+\author{Angela M.\ Berti,\altaffilmark{1}
+}
+	
+\altaffiltext{1}{Department of Physics \& Astronomy, University of Utah, 201 Presidents' Cir, Salt Lake City, UT 84112, USA}
+%\altaffiltext{1}{Center for Astrophysics and Space Sciences, Department of Physics, University of California, 9500 Gilman Dr., La Jolla, San Diego, CA 92093, USA}
 
-%\section*{Motivation for SHAM + age/color matching-based mocks for the DESI LRG sample}
+\begin{abstract}
+TODO
+\end{abstract}
 
-Galaxy redshift surveys reveal the large-scale structure of the universe and provide a means to study its expansion history. Large volumes are required to suppress statistical measurement errors due to both sample and cosmic variance, and are achieved with a combination of survey depth and large survey area. The Sloan Digital Sky Survey \citep[SDSS;][]{york_etal00} mapped approximately one-third of the entire sky to $z\sim0.2$ with spectroscopic redshifts, providing the first large-volume three-dimensional map of much of the local universe. Subsequent spectroscopic galaxy redshift surveys have probed much smaller areas (a few square degrees) to $z\sim1$ (e.g.\ PRIMUS \citep{coil_etal11, cool_etal13} and DEEP2 \citep{newman_etal13}), and are optimized for studying galaxy formation and evolution by obtaining statistically complete samples that include galaxies with stellar masses down to $\sim10^{9.5}\ \msun$, below the break in the galaxy stellar mass function.
-%Other pencil-beam 0.2 < z < 1 spec-z surveys:%zCOSMOS (Lilly + (2007)
-%VVDS (Le Fèvre+ (2004, 2015)
-%VIPERS (Guzzo+ (2014)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}\label{sec:intro}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Bridging the gap between the large area of the SDSS and the depth of pencil-beam surveys like DEEP2 and PRIMUS are more recent large-volume spectroscopic and imaging surveys that sacrifice observing fainter and lower-mass galaxies in exchange for volumes large enough to constrain cosmological parameters, such as the dimensionless Hubble constant ($h$), the density of matter ($\Omega_{\rm m}$) and of energy ($\Omega_\Lambda$), and the amplitude of mass fluctuations on the scale of $8\ \Mpch$ ($\sigma_8$). The Baryon Oscillation Spectroscopic Survey \citep[BOSS;][]{dawson_etal13} obtained spectroscopic redshifts of 1.5 million galaxies with $\logm > 11$ to $z\sim0.7$ over 15.3 Gpc$^3$ (9,376 \degsq) to constrain cosmological parameters by measuring the baryon acoustic oscillation (BAO) signal present in the clustering of galaxies on scales of $\sim100\ \Mpch$.
+halos = parent halos + subhalos
+All subhalos are halos, but not all halos are subhalos.
 
-%Hyper Suprime-Cam survey (HSC; Aihara+ (2018b)
-%Dark Energy Survey (DES; Collaboration 2005)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Data}\label{sec:data}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The Dark Energy Spectroscopic Instrument \citep[DESI;][]{eisenstein_etal15} survey is spectroscopic galaxy redshift survey of unprecedented volume. Over the next five years DESI will obtain spectra for millions of galaxies in four target classes over 14,000 \degsq. The bright galaxy survey (BGS)  extends to $z\sim0.4$, while the the luminous red galaxy (LRG) sample will reach to $z\sim1$ and cover 20 times the volume of the BGS. The DESI survey will also observe emission line galaxies (ELGs) to $z\sim1.6$, and quasars to $z\sim3.5$.
+TODO
 
-DESI is fundamentally a BAO survey, and as such its target samples are optimized for precision measurements of cosmological parameters. The bright, massive galaxies DESI will observe trace the underlying dark matter distribution of the universe. However, DESI also offers novel opportunities for studying galaxy evolution, as well as constraining the high-mass end of the galaxy stellar mass function (SMF) and stellar-to-halo mass relation (SHMR), provided that sample selection effects are well-understood.
+\subsection{Photometry and redshift estimates}\label{subsec:photometry}
+We use publicly available catalogs from the ninth data release (DR9) of the DESI Legacy Imaging Surveys (Dey+ 2019). The Legacy Surveys provide optical imaging in the $g$, $r$, and $z$ bands is from a combination of three public surveys: the DECam Legacy Survey (DECaLS; ref),
+%conducted with the Dark Energy Camera (DECam) on the Blanco 4-meter telescope at the Cerro Tololo Inter-American Observatory in Chile;
+the Beijing-Arizona Sky Survey (BASS; ref),
+%conducted with the 90Prime camera at the prime focus of the Bok 2.3-meter telescope at Kitt Peak National Observatory (KPNO);
+and the Mayall $z$-band Legacy Survey (MzLS; ref).
+%, conducted with the MOSAIC-3 camera at the prime focus of the 4-meter Mayall telescope at KPNO.
+14,000 square degrees of sky visible from the northern hemisphere
+2 contiguous regions within the northern and southern galactic caps
 
-Unlike the essentially magnitude-limited BGS sample of relatively nearby galaxies, the DESI LRG sample is selected with a comparatively complex set of magnitude and color cuts, creating incompleteness that may depend on any combination of galaxy color, stellar mass, and redshift. However, the LRG sample covers a volume 20 times larger than that of the BGS sample, and will contain a much higher number density of spectroscopic redshifts at $0.3 < z < 1$ than any previous spectroscopic galaxy redshift survey, making it a good sample for statistical studies with negligible sample and cosmic variance errors. The rarity and associated low number density of massive galaxies $(\sim2\times10^{-5}\ {\rm Mpc}^{-3}$ for $\logm > 11.5)$ means that large volumes are essential for obtaining sample sizes large enough to for statistically significant measurements of the high-mass end of the galaxy SMF and the SHMR of LRGs.
 
-\section*{Completeness studies of BOSS samples}
+DR9 also includes four mid-infrared bands from the Wide-field Infrared Survey Explorer (WISE; ref), although only the 3.4-$\upmu$m $W1$-band is relevant DESI LRG target selection.
 
-Numerous studies of the dependence of BOSS galaxy sample completeness on redshift and stellar mass inform how the same biases can be understood for the DESI LRG sample. BOSS contains two color- and magnitude-selected samples of massive galaxies $(\logm > 11)$:\ the LOWZ sample contains LRGs at $0.15 < z < 0.4(3)$, and the approximately stellar mass-limited CMASS (constant mass) sample, which selects galaxies of all colors at $0.4(3) < z < 0.8$.
 
-Assessing the stellar mass completeness of BOSS samples requires stellar mass estimates for BOSS galaxies, as well as the total stellar mass function over the same redshift range and stellar mass range of the sample of interest. \citet{leauthaud_etal16} estimate stellar masses for the LOWZ and CMASS samples by fitting SEDs with linear combinations of \citet{bruzual_charlot03} stellar population templates. For the total galaxy SMF they use a combination of PRIMUS data for lower masses $(\logm \lesssim 11.3)$, and the Stripe 82 Massive Galaxy Catalog (S82 MGC) for the high-mass end of the SMF. Stellar mass estimates for both samples are from SED fitting techniques; \citet{moustakas_etal13} describes the derivation of the PRIMUS SMF, while S82 MGC estimates use the methods described in \citet{bundy_etal10, bundy_etal15}. S82 MGC is stellar mass-complete above $\logm \gtrsim 11.2$ \citep{bundy_etal15}, where the PRIMUS SMF is poorly constrained due to low number counts of massive galaxies (PRIMUS is $<10\ \degsq$).
+Zhou+ 2020 compute photometric redshifts for the full catalog of DECaLS DR8 objects using a random forest regression machine learning algorithm. They estimate their redshifts to be accurate for objects with apparent $z$-band magnitude $z < 21$, well beyond the $z$-band cut we use to select our target galaxy samples, described in \S\ref{subsec:parent_samples} below.
 
-To estimate the completeness of BOSS \citet{leauthaud_etal16} use the total galaxy SMF at $z\sim0.3$ for LOWZ and $z\sim0.55$ for CMASS. They find LOWZ to be 80\% complete at $\logm > 11.6$ over the full sample range of $0.15 < z < 0.43$. CMASS is 80\% complete at $\logm > 11.6$ *only* at $0.51 < z < 0.61$.
 
-\citet{tinker_etal17} quantify the completeness of BOSS CMASS target in terms of the combined abundance of the CMASS, (CMASS\_)SPARSE, and WISE(\_COMPLETE) samples, limited to the peak in the CMASS redshift distribution at $0.45 < z < 0.6$. The main objectives of \citet{tinker_etal17} are to measure the SHMR of massive galaxies $(\logm \sim 11.5)$, and compare a variety of methods for estimating stellar mass, and as such they do not estimate the total galaxy SMF as in \citet{leauthaud_etal16}, although they do compare their results to the \citet{leauthaud_etal16} estimate. Although the relevant redshift ranges are not exactly the same (and neither are the denominators), \citet{tinker_etal17} estimate slightly higher completeness at all stellar masses:\ $\sim50\%$ at $\logm \sim 11.4$ versus the \citet{leauthaud_etal16} estimate of $\sim30\%$.
+\subsection{Target galaxy samples}\label{subsec:parent_samples}
 
-To characterize the SHMR for high-mass galaxies \citet{tinker_etal17} estimate the large-scale galaxy bias as a function of stellar mass for $\logm > 11.4$ using 12 different stellar mass estimates. They construct SHAM-based mocks with Rockstar \citep{behroozi_etal13b} catalogs for the MultiDark simulation $(\Omega_{\rm m}=0.27$ and $\sigma_8=0.82)$ by correlating stellar mass and halo mass, and add random Gaussian scatter of width $\sigma_{\log M_*}$ to galaxy stellar masses, where $\sigma_{\log M_*}$ derives from the relevant galaxy SMF (Wetzel \& White 2010). They also implement SHAM with luminosity and velocity dispersion for the sake of comparison with stellar mass.
+One of the primary goals of this work is to develop magnitude-limited mock galaxy catalogs that represent a superset of the color-magnitude space occupied by DESI LRGs.
 
-\citet{tinker_etal17} fit galaxy bias versus stellar mass for a range of scatter amplitudes at fixed halo mass to constrain the scatter in the SHMR above $\logm \sim 11.4$. Their main results are
-\begin{enumerate}
-\item the \citet{chen_etal12} PCA-based stellar mass estimates have the tightest correlation with halo mass,
-\item luminosity is *less* tightly correlated with halo mass than stellar mass regardless of the estimation method,
-\item velocity dispersion correlates *as well as* photometrically-derived stellar masses, but worse than PCA stellar mass estimates, and
-\item almost any stellar mass estimate offers a more robust rank-ordering of a galaxy sample with a heterogeneous color distribution than does luminosity.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\setlength\extrarowheight{2pt}
+%\setlength{\tabcolsep}{5pt}
+\begin{deluxetable}{ r p{6.5cm} }%[h!]
+\tablecaption{TODO
+\label{tab:masks}
+}
+\tablehead{
+\colhead{ \texttt{MASKBIT}} & \colhead{Description}
+}
+\startdata
+5, 6, 7 & bad pixel in all of a set of overlapping $g$, $r$, or $z$-band images \\
+8, 9 & bad pixel in a WISE $W1$ or $W2$ bright star mask \\
+11 & pixel within locus of a radius-magnitude relation for Gaia (ref?) DR2 stars to $G < 16$ \\
+12 & pixel in a Siena Galaxy Atlas (ref?) large galaxy \\
+13 & pixel in a globular cluster \\
+\hline \\
+\vspace{-4ex} \\
+\colhead{\texttt{FITBIT}} & \colhead{Description} \\
+\vspace{-2ex} \\
+\hline \\
+\vspace{-4ex} \\
+6 & source is a medium-bright star \\
+7 & Gaia source (ref?) \\
+8 & Tycho-2 star (ref?) \\
+\enddata
+\end{deluxetable}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+For additional details about these masks see legacysurvey.org/dr9/bitmasks/
+
+Our parent galaxy samples are defined by the following cuts:
+$z < 20.7$
+
+We also remove stars by excluding catalog sources of \texttt{TYPE = PSF}.
+
+geometric mask to ensure complete angular coverage by available randoms provided with DECaLS catalogs
+
+r-band and W1-band absolute magnitude cuts
+	eliminate fainter galaxies (with larger photo-z errors) that don't overlap relevant LRG magnitude range
+	smaller parent sample size improves computation time
+photo-z redshift bins (nominal range +/- 150 Mpc/h)
+
+Data samples:
+	fields: 2 (north, south)
+	absolute magnitude cuts: 2 (r, W1)
+	photo-z bins: 4-6 ( (0.3,) 0.4, 0.5, 0.6, 0.7, 0.8(, 0.9) )
+TOTAL: 2 x 2 x 4(,5,6) = 16(,20,24)
+
+TODO: summary table of parent data samples?
+
+
+
+%For each of the above 16(,20,24) data samples:
+%	compute full sample (no abs mag bins) wp(rp) (cross-correlation of strict photo-z bin with padded bin)
+%		FINAL cuts (0.4 < zphot < 0.5; approx. equal parent sample sizes):
+%			Mr < -20.5
+%			MW1 < -21.8
+%			above are IN PROGRESS for zphot=(0.4,0.5) NORTH
+%	compute wp(rp) in TBD absolute magnitude bins (r, W1)
+%		2 or 3 bins depending on samples sizes and/or abs mag range
+%	compute full sample luminosity function
+%	compute full sample effective galaxy number density as function of progressively fainter: neff(< Mx)
+%		ng_eff(< Mx) = sum( 1 / (angular_survey_area*Veff) )
+%		V_eff = volume corresponding to max redshift at which galaxy would have been observed by survey
+%	compute color distributions (g-r, g-W1) in narrow TBD absolute magnitude bins (Mr, MW1)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Simulations}\label{sec:sims}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+MDPL2 (refs)
+1 \Gpch periodic box
+DM particle resolution
+cosmology
+available snapshots
+Rockstar halo finder (refs)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Subhalo abundance matching}\label{sec:sham}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Subhalo abundance matching (SHAM; refs) places mock galaxies into halos by exploiting the correlation between some galaxy property\textemdash usually stellar mass or luminosity\textemdash and a halo property such as virial mass or circular velocity, \vcirc, (TODO: elaborate on vcirc options). Here we use SHAM to create a mock galaxy population with the same abundance and luminosity distribution of the target galaxy sample by assuming the following relation:
+%
+\begin{equation}\label{eq:sham}
+\neff(<M)=n_{\rm h}(>\vcirc),
+\end{equation}
+%
+\noindent i.e., the (effective) number density of galaxies, \neff, of magnitude $M$ or brighter equals the number density of halos, $n_{\rm h}$, with circular velocity \vcirc or greater.
+
+TODO: also tested \vmax and \vmaxmpeak and found that \vmaxmpeak works as well as \vpeak, while using \vmax yields significantly worse results.
+
+\subsection{Luminosity assignment}\label{subsec:luminosity_assign}
+
+To assign absolute magnitudes to halos in each redshift bin we implement the following procedure:
+%
+\begin{enumerate}[leftmargin=0pt, itemindent=24pt, listparindent=10pt, label=(\arabic*), nosep]
+\item \label{step:neff}
+Compute for each parent galaxy sample the effective galaxy number density as a function of absolute magnitude in band ${X=\{M_r, M_{W1}\}}$, $\neff(<M_X)$. Absolute magnitudes are computed with distance moduli from photometric redshifts, and $K$-corrections are calculated using the \idl package \kcorrect (ref) with DECam $grz$ and WISE $W1$ and $W2$ filter responses. We $K$-correct each target galaxy sample to the redshift of the relevant simulation snapshot, \zsim (TODO: see table?), e.g., galaxies in the ${0.4 < \zphot < 0.5}$ bin are $K$-corrected to $\zsim=0.42531$.
+
+We compute $\neff(<M_X)$ for each parent galaxy sample using the method of inverse effective volumes (TODO: refs). For each galaxy in the sample we calculate an effective volume, $V_{\rm eff}$:
+%
+\begin{equation}
+{V_{\rm eff}(M_X) = f_\Omega \left( V_{\rm max}(M_X)-V_{\rm min} \right)},
+\end{equation}
+%
+\noindent where $f_\Omega$ is the fractional solid angle covered by the parent galaxy sample, and $V_{\rm min}$ is the comoving volume of the lower limit of the redshift bin. $V_{\rm max}(M_X)$ is the comoving volume of either the upper limit of the redshift bin, or of the maximum possible redshift a galaxy of magnitude $M_X$ could have and still be observed at the magnitude limit of the sample, whichever is smaller.
+
+The effective galaxy number density is the sum of the inverse of $V_{\rm eff}(M_X)$ over all galaxies in the sample:
+%
+\begin{equation}\label{eq:neff}
+  \neff(<M_X) = \sum_i \left[ V^i_{\rm eff}(M_X) \right]^{-1}.
+\end{equation}
+%
+\item \label{step:nh}
+Assign absolute magnitudes to mock galaxies with no scatter in the luminosity\textendash \vpeak relation according to Equation~\ref{eq:sham}. For each halo we find the cumulative number density $n_{\rm h}(>\vpeak)$ corresponding to its value of \vpeak. We then assign to each halo a mock galaxy with the absolute magnitude $M_X$ at which the effective number density $\neff(<M_X)$ of the parent galaxy sample equals $n_{\rm h}(>\vpeak)$. (TODO: figure?)
+%
+\item \label{step:sham_scatter}
+To incorporate magnitude-dependent scatter (\sigmamag) into the luminosity\textendash \vpeak relation we assign to each mock galaxy a new absolute magnitude, $M'_X$, where $M'_X$ is drawn from a Gaussian distribution centered at $M_X$ with width $\alpha\,M_X$, where $\alpha>0$, i.e., the width of the distribution is proportional to $M_X$. We then assign absolute magnitudes to mock galaxies as in step \ref{step:nh}, but according to $M'_X$ instead of $M_X$. This method preserves both the galaxy luminosity function and the original \vpeak distribution.
+%
+\item \label{step:los_scatter}
+Scatter the positions of mock galaxies along one axis of the simulation volume (we choose the $x$-axis as this ``line-of-sight" axis to avoid confusion with redshift) to mimic the uncertainty in radial position of our target galaxy samples due to photometric redshift errors. For each mock galaxy we draw a ``scattered" $x$-axis coordinate $x'$ from a Gaussian distribution of width $\sigma_x$ centered at the galaxy's original $x$-axis position. Mock galaxies that scatter out of the simulation volume of $1~h^{-3}{\rm Gpc}^3$ are wrapped back in to preserve the periodic boundary conditions, e.g., a mock galaxy at $x=25~\Mpch$ that scatters to $x'=-50~\Mpch$ would be placed at $x=950~\Mpch$.
+%
+\item \label{step:model_wp}
+Compute the projected correlation function, \wprp, of each mock catalog (see \S\ref{subsec:wprp}), and the goodness-of-fit per degree of freedom, \chisqred (see \S\ref{subsec:error}), of the model fit to the projected correlation function of the relevant parent galaxy sample. We measure \chisqred of \wprp in bins of absolute magnitude ($M_r$ or $M_{W1}$; see Figure~\ref{TODO}).
+%
+\item \label{step:model_refine}
+Repeat steps \ref{step:sham_scatter} through \ref{step:model_wp} for additional values of $\alpha$ and $\sigma_x$ as needed to minimize \chisqred in each magnitude bin. In practice we first sparsely sample a wide range of values of $\alpha$ and $\sigma_x$:
+%
+\begin{subequations}
+  \begin{align}
+    (0.1 \leq \alpha \leq 0.9),\ &\Delta\alpha=0.1 \\
+    (10 \leq \sigma_x \leq 100\, \Mpch),\ &\Delta\sigma_x=10\, \Mpch
+  \end{align}
+\end{subequations}
+%
+\noindent We then more densely sample narrower ranges of both parameters around the initial coarse-grained values that minimize \chisqred.
+%
+\item \label{step:sigma_linear}
+Finally, we parameterize the dependence of \sigmamag and \sigmalos on absolute magnitude as follows:
+%
+\begin{subequations}\label{eq:sigma_linear}
+\begin{align}
+  \sigmamag(M_X) &= a\, M_X + \sigma_{{\rm mag},0} \\
+  \sigmalos(M_X) &= b\, M_X + \sigma_{{\rm los},0}.
+\end{align}
+\end{subequations}
+%
+\noindent The values of $(a,\, \sigma_{{\rm mag},0})$ and $(b,\, \sigma_{{\rm los},0})$ are determined by linear fits to $\sigmamag^i$ versus $M^i_X$, and $\sigmalos^i$ versus $M^i_X$, respectively, where $\sigmamag^i$ and $\sigmalos^i$ are the values that minimize \chisqred of \wprp in the $i$th magnitude bin, $M^i_X$. Figure~\ref{TODO} shows the $r$-band and $W1$-band magnitude bins used for each redshift bin.
 \end{enumerate}
-\noindent They also find that the bias of CMASS galaxies is minimized at $\logm \sim 11.4$, with larger bias at both lower and higher stellar masses, and note that the increase in bias at lower stellar masses could be attributable to the CMASS selection cuts preferentially selecting satellites at this mass range.
 
-\citet{montero-dorta_etal16b} measure the luminosity function and completeness versus redshift, color, and $i$-band magnitude of the red sequence (RS) component of CMASS at $z\sim0.55$. I don't fully understand their method, but they claim to deconvolve the intrinsic CMASS color--color and color--magnitude distributions from photometric errors and selection effects, which involves modeling the covariance matrix for $i$-band magnitude, ${g-r}$ color, and ${r-i}$ color with Stripe 82 data, and doesn't rely on any SPS models. They find the completeness of the RS as a function of $i$-band luminosity is 100\% at $i\sim19.5$ and falls to zero at $i\sim20.0$ for $0.5 < z < 0.7$. The completeness with redshift is $\sim30\%$ at $z\sim0.45$ and rises to a plateau of $\sim80\%$ at $z\sim0.575$.
+\subsection{Projected correlation functions}\label{subsec:wprp}
 
-%Saito+ 2016 (https://doi.org/10.1093/mnras/stw1080)
-%Sec. 5.2, 5.3 for SHAM implementation based on Hearin+ (2013 methods for SDSS
-%H13 SHAM implementation at lower stellar masses:\ z_starve dominated by z_form
-%Saito's implementation of SAM with CMASS:\ z_starve dominated by z_char
-%z_form component of z_starve causes red galaxies to cluster *less* strongly than blue
-More relevant for the work I'm envisioning is \citet{saito_etal16}, which uses SHAM and a simple version of age matching to create $z\sim0.5$ mocks with and without added assembly bias effects. They also explicitly do not assume a constant CMASS HOD with redshift or galaxy color, although they do assume a constant total SMF over $0.43 < z < 0.7$.
+The luminosity assignment stage of our modeling procedure involves just two free parameters, $\alpha$ and \sigmalos, which account for scatter in the luminosity\textendash\vcirc relation and photometric redshift errors of our target galaxy samples, respectively. We constrain these parameters by fitting the projected correlation functions of mock galaxy catalogs created from our model to those of the corresponding parent galaxy samples.
 
-For the total galaxy SMF \citet{saito_etal16} follow a method similar to \citet{bundy_etal15}, who use \citet{bundy_etal10} SED stellar mass estimates for S82 MGC to compute the SMF above $\logm > 10.5$ over $0.43 < z < 0.7$. \citet{saito_etal16} mention PRIMUS for constraining the lower-mass end of the SMF (as in Leauthaud et al.), but it's not clear to me whether they actually use PRIMUS or just extrapolate the full SMF from S82 MGC the mass range where it's complete.
+One goal of this paper is to exploit the completeness and enormous volume of DECaLS data, which comes at the expense of the precision clustering measurements achievable with spectroscopic redshifts. Zhou+ 2020 has demonstrated the constraining power of the projected correlation function, \wprp, of DECaLS galaxies computed with line-of-sight distances derived from photometric redshifts (they use this statistic to constrain the halo occupation distribution (HOD, TODO: defined earlier?) parameters of LRGs selected from DECaLS DR7). The projected correlation function integrates the 3D correlation function, \xir, along the line-of-sight, effectively eliminating the effects of radial distance uncertainty due to photometric redshift errors:
+%
+\begin{equation}
+\wprp \equiv \int_{-\pimax}^{\pimax}\!\xi(\rp,\pi)\,d\pi \approx 2\!\int_0^{\pimax}\!\xi(\rp,\pi)\,d\pi,
+\end{equation}
+%
+\noindent where \rp is the projection of $r$ into the plane perpendicular to the line-of-sight distance, $\pi$.
 
-For SHAM \citet{saito_etal16} use Rockstar halo catalogs for the MultiDark simulation \citep[MDR1;][]{riebe_etal13}. Their model predicts that their observed increase in the stellar mass of the CMASS sample with redshift by a factor of 1.8 should increase the clustering by a factor of 1.5 (and mean halo mass by a factor of 3.5) over the same redshift range, and they emphasize that this result is independent of the choice of the halo parameter used for SHAM. They note that \citet{reid_etal14} observed a constant clustering amplitude with redshift for CMASS and thus assumed a redshift-independent HOD, and conclude that the \citet{reid_etal14} result may be due to variation in color and stellar mass over the same redshift range that coincidentally compensate for each other to produce a constant clustering amplitude. Specifically, they note the CMASS selection function excludes recently star-forming galaxies at low redshift $(z < 0.6)$ and fixed stellar mass, while at higher redshift $(z > 0.6)$ the CMASS sample is flux-limited and therefore includes a larger range of galaxy colors at fixed magnitude. Additionally, at least at lower masses redder galaxies cluster more strongly than bluer galaxies at fixed stellar mass. If this trend persists at higher masses, then the inclusion of bluer galaxies in CMASS at higher redshifts might offset the effect of increased mean stellar mass on the clustering signal. A primary conclusion of \citet{saito_etal16} is that assembly bias does factor into the galaxy--halo connection for high-mass galaxies, i.e.\ the SHMR for these galaxies has some dependence on galaxy color, and should not be inferred from the clustering signal without any consideration of color.
+We use the \corrfunc package (ref) to calculate \wprp for both our target galaxy samples and mock catalogs in 19 logarithmic bins between ${\rp>0.04\Mpch}$ and ${\rp<52.8\Mpch}$.
 
-%\citet{guo_etal18} (https://doi.org/10.3847/1538-4357/aabc56)
-%Validate method against mock catalogs with three different assumed completeness functions and successfully recover the input completenesses
-%Find slope of SHMR steepens with increasing redshift over BOSS redshift range
-\citet{guo_etal18} actually test how stellar mass incompleteness affects the inferred SHMR of BOSS galaxies. They also model completeness versus stellar mass and redshift separately for centrals and satellites. Agreement with \citet{leauthaud_etal16} (comparing the Guo et al.\ model for centrals to that of Leauthaud et al.\ for all galaxies) is generally quite good, except for $\logm > 11.6$ at $0.6 < z < 0.7$, where Guo's central completeness plateaus at $\sim60\%$ but the Leauthaud et al.\ estimate is close to unity.
+As our data samples are confined to narrow redshift ranges of width ${\Delta z = 0.1}$, photometric redshift errors will cause some galaxies that belong to a given redshift bin to scatter into an adjacent bin and be excluded from the calculation of \wprp for their true bin. To account for this we adopt the method used by Zhou+ 2020 (see their Figure 8): instead of the autocorrelation function of galaxies within each redshift bin, we use the Landy-Szalay (ref) estimator for the cross-correlation of two samples, $D_1$ and $D_2$:
+%
+\begin{equation}\label{eq:landy-szalay}
+\wprp = 2\pimax\!\left(\frac{D_1D_2 - D_1R_2 - D_2R_1}{R_1R_2} + 1 \right).
+\end{equation}
+%
+\noindent Each term of Equation~\ref{eq:landy-szalay} denotes pair counts between two samples, where $D$ and $R$ respectively indicate samples of data (galaxies) and random points with the same angular and redshift distributions as the corresponding data sample. Here $D_1$ is all galaxies within a given redshift bin: ${\zmin < \zphot < \zmax}$, where \zmin and \zmax are the limits of the bin, while $D_2$ is all galaxies within a wider redshift range defined by ${(\zmin-\pimax) < \zphot < (\zmax+\pimax)}$, where ${\pimax=150~\Mpch}$.
+We verify our implementation of this method with \corrfunc by reproducing the projected correlation functions of DECaLS LRGs that Zhou+ 2020 obtain (see their Figure 9) using different clustering code.
 
-Their analysis is motivated (at least in part) by the differences between the color distributions of centrals and satellites \citep[e.g.][]{yang_etal18}, and they ask whether this causes different incompleteness effects between centrals and satellites in BOSS samples. They add an incompleteness component to the \citet{yang_etal12} conditional stellar mass function (CSMF) model with the goal of predicting the \emph{total} galaxy SMF and SHMR from incomplete BOSS samples (ICSMF model).
+DECaLS data includes catalogs of random points with the same angular sky coverage and mask information as the survey footprint, which we use to construct our random samples. We use 20 times as many random as data points for each galaxy sample, and draw redshifts for random points from the redshift distribution of the corresponding data sample.
 
-The \citet{yang_etal12} CSMF assumes the average number of central galaxies of stellar mass $M_*$ hosted by halos of mass \mh is a lognormal function with scatter $(\sigma)$ that depends on halo mass (versus, say, the \citet{tinker_etal17} estimate of $\sigma \sim 0.18$ for CMASS). \citet{guo_etal18} assume constant $\sigma=0.173$ over $0.1 < z < 0.8$, and model the average central galaxy stellar mass in halos of mass \mh as a broken power law (i.e.\ different slopes for the low-mass and high-mass ends). They then model the completeness of BOSS, $c(M_*)$, in seven redshift bins with the functional form \citet{leauthaud_etal16} find fits their completeness estimates (an error function with three free parameters), but \citet{guo_etal18} allow for different parameter values for the completenesses of centrals and satellites (six free parameters). This gives their observed (i.e.\ incomplete) BOSS galaxy SMF model 12 total parameters, four for the assumed galaxy SMF and three each for the central and satellite completeness functions). They constrain these parameters by comparing the predicted incomplete SMF and projected clustering to the data using an MCMC method, and then apply the best-fit parameters to the assumed intrinsic galaxy SMF (same as the 12-parameter model but without the $c(M_*)$ factors in the SMF integrands). This method is completed separately for each of seven redshift bins over the full BOSS sample range, using a mock constructed with the BigMDPL simulation \citep{klypin_etal16} snapshot closest to the median the redshift of each bin ($z=0.152$ to 0.759)
+To measure \wprp of our mock catalogs we take advantage of the \corrfunc \texttt{theory} module, which can quickly calculate the autocorrelation function of a sample within a periodic volume using analytic randoms. We confirmed that this method produces the expected result by calculating \wprp of several mock catalogs directly from pair counts between mock galaxies and catalogs of random points constructed for the simulation volume.
 
-There are several important caveats to the \citet{guo_etal18} ICSMF model:\ (1) assumes the same SHMR for centrals and satellites; (2) ignores possible evolution of the CSMF between accretion and observation redshifts (i.e.\ uses $M_{\rm acc}$ for satellite mass); and (3) similarly ignores possible growth and/or tidal stripping of satellites after accretion. They don't adopt different central and satellite SHMRs because adding four additional model parameters would cause overfitting as the central and satellite SHMRs are not independent \citep{guo_etal16}, and directly addressing these caveats is left to future work.
 
-\citet{guo_etal18} acknowledge their method assumes incompleteness is uncorrelated with galaxy color, which isn't necessarily true, especially for color-selected samples over a wide redshift range. They test this assumption with a ${g-i>2.35}$ color cut on the BOSS sample at $0.5 < z < 0.6$ to remove blue galaxies (21\% of the sample) within the limits of photometric errors. Results are strikingly similar for the full BOSS sample versus the strict red color cut, with the exception of the satellite galaxy completeness at $\logm > 11.2$, which drops by roughly 10\% from the full BOSS sample. Based on this test \citet{guo_etal18} conclude that ignoring galaxy color in their analysis is inconsequential because red galaxies dominate the high-mass end of the total galaxy SMF, although they also assert that differences in the SHMRs of blue and red galaxies likely can't be ignored at lower stellar mass.
+\subsection{Jackknife error estimation and goodness-of-fit}\label{subsec:error}
 
-\citet{bates_etal19} estimate the completeness of BOSS samples using a technique (``clustering redshifts") that involves computing the angular cross-correlation of a photometric (``unknown") redshift sample with a spectroscopic (?reference") sample in different redshift bins to obtain a redshift distribution for the photometric sample. This method also requires an estimate of the galaxy bias evolution, which \citet{bates_etal19} obtain from both the LGalaxies SAM \citep{henriques_etal15} with the Millennium simulation and the SAGE analytic model \citep{croton_etal16} with the MDPL2 simulation. Their reference sample is the combined BOSS LRG, eBOSS LRG, and eBOSS QSO samples, and their unknown sample is SDSS DR8 galaxies with ${i < 21}$ (for completeness), masked to the region of overlap with the reference sample.
+To estimate the uncertainty of the \wprp measurements of our target galaxy samples we use HEALPix (TODO: healpy?) to divide the angular sky coverage of each sample into $N_{\rm jk}$ regions of roughly equal area, suitable for jackknife resampling. We then measure \wprp in each of these $N_{\rm jk}$ regions, and compute the covariance matrix as follows:
+%
+\begin{equation}\label{eq:cov}
+{\rm Cov}_{ij} = \frac{N_{\rm jk}-1}{N_{\rm jk}}
+\sum^{N_{\rm jk}}_{\ell=1}\left(\omega^\ell_i-\overline{\omega}_i\right) \left(\omega^\ell_j-\overline{\omega}_j\right),
+\end{equation}
+%
+\noindent where $\omega^\ell_i$ and $\omega^\ell_j$ are \wprp of the $\ell$th jackknife region for the $i$th and $j$th \rp bins, respectively, and $\overline{\omega}_i$ and $\overline{\omega}_j$ are the mean values of \wprp across all jackknife regions for the $i$th and $j$th \rp bins, respectively.
 
-I don't fully understand the motivation for using this method to estimate the redshift distribution of SDSS galaxies from photometry; I suppose it's mainly a proof-of-concept exercise. Regardless, they construct SMFs and $i$-band luminosity functions for SDSS galaxies in narrow bins of color and magnitude, then use the clustering redshifts method to recover the redshift distribution of each bin. Galaxy stellar masses and luminosities are inferred from the combination of the SMF, luminosity function, and redshift distribution of each bin, plus comparisons with mock data. They estimate BOSS completeness using their inferred total SMF to $z\sim0.8$, and find it to be $\sim80\%$ above $\logm > 11.4$ at $0.2 < z < 0.7$, but only $\sim30\%$ at $0.7 < z < 0.8$ at the highest masses $(\logm > 11.6)$.
+With the covariance matrix in hand we quantify how successful any instance of our model is at fitting the projected correlation function of the data by computing $\chi^2$ per degree of freedom $(\chisqred)$:
+%
+\begin{equation}\label{eq:chisq}
+\chisqred=\frac{1}{\nu}\sum_{i=1}^{N_{r_{\rm p}}}
+\sum_{j=1}^{N_{r_{\rm p}}}\left(\omega_i-\omega^{\rm mod}_i\right)
+\!\left({\rm Cov}^{-1}\right)_{ij}\!\left(\omega_j-\omega^{\rm mod}_j\right)\!,
+\end{equation}
+%
+\noindent where $N_{\rp}$ is the number of \rp bins, $\nu$ is the number of degrees of freedom minus the number of model parameters (here ${N_{\rp}-2=17}$), $\omega_i$ and $\omega_j$ are the data \wprp values in the $i$th and $j$th \rp bins, respectively, and $\omega^{\rm mod}_i$ and $\omega^{\rm mod}_j$ are the \wprp values of the relevant mock catalog in the $i$th and $j$th \rp bins, respectively.
 
-\section*{Summary of existing work on the ``lensing is low" discrepancy}
 
-\citet{leauthaud_etal17} compare clustering and galaxy-galaxy (g-g) lensing measurements of BOSS CMASS galaxies to 
-predictions from mocks tuned to match the observed CMASS SMF and clustering \citep{saito_etal16, rodriguez-torres_etal16}. To account for stellar mass incompleteness in mocks they downsample mock galaxies according to stellar mass to match the redshift-dependent CMASS SMFs; these mocks do *not* account for color incompleteness of CMASS sample.
-\citet{leauthaud_etal17} find standard galaxy--halo connection models (both SHAM and HOD models) that match the observed CMASS clustering predict a g-g lensing signal 20 to 40\% larger than the observational result. They leave tests of models with galaxy assembly bias to potentially resolve the ``lensing is low" discrepancy to other papers (summarized below), but do assess the impact of baryonic effects on CMASS-like samples with the Illustris \citep{vogelsberger_etal14, nelson_etal15} simulations. Comparing results from full hydrodynamical and dark matter only versions of Illustris, they find that that baryonic effects can induce a 10\% to 30\% difference in the lensing metric $\Delta \Sigma$ (on one-halo scale), and a factor of two difference in the satellite fraction for galaxy samples with CMASS-like number densities.
+\subsection{Rest-frame color assignment}\label{subsec:color_assign}
 
-Two conclusions from the ``lensing is low" paper stand out as particularly relevant for my work:
-
-\begin{quotation}
-``In \citet{saito_etal16}, we present the first analysis of the effects of assembly bias on the clustering properties of CMASS. However, our analysis assumed a simplified model for the color completeness of CMASS. To build on \citet{saito_etal16}, the next step would be to characterize the color-completeness of CMASS and to explore the impact of assembly bias using, for example, conditional SHAM techniques \citep[e.g.][]{hearin_etal14}."
-\end{quotation}
-
-This is essentially a high-level description of what I'm working on:\ incorporating age-matching at multiple redshifts into an analysis similar to that of \citet{saito_etal16}. The second conclusion from \citet{leauthaud_etal17} that motivates my project, particularly in the context of DESI, is:
-
-\begin{quotation}
-``If the ages of galaxies correlate with the ages of their dark matter halos, then assembly bias effects may be present in color-selected samples such as CMASS. The clustering of CMASS tightly constrains the large-scale bias of the sample whereas the lensing is sensitive to the mean halo mass. The difference that we observe may suggest a tension between the halo mass and the large-scale bias of this sample---the smoking gun for assembly bias. If assembly bias is at play, it could be a systematic effect for RSD constraints from upcoming surveys such as DESI \citep{levi_etal13}."
-\end{quotation}
-
-\citet{zu20} claim to largely reconcile the ``lensing is low" discrepancy on small scales $(r\lesssim1\ \Mpch)$ by extending the iHOD framework of \citet{zu_mandelbaum15, zu_mandelbaum16} to include halo mass dependence of the satellite selection function. Their model lensing g-g predictions are still mostly $\sim30\%$ higher than the observed signal at larger scales in all three redshift bins (bin edges are 0.43, 0.51, 0.57, 0.7).
-
-They directly measure the selection function of LOWZ centrals by comparing the sample to the brightest central galaxies (BCGs) of redMaPPer \citep{rykoff_etal14} cluster catalogs, and find it to be largely independent of halo mass (at least in the cluster mass range of redMaPPer). Satellite completeness is modeled as a joint function of stellar and halo mass using the erf functional form of \citet{leauthaud_etal16}. \citet{zu20} find the satellite detection fraction declines from high completeness at high stellar mass to zero at low stellar mass, with the characteristic stellar mass (separating low- and high-mass regimes) and the slope of decline both dependent on host halo mass. Specifically, satellite selection is independent of halo mass at $\mh>10^{13.76}\ \msun$, reflecting the convergence of satellite colors to the red sequence for the most massive host halos.
-
-The interpretation of these results is that the BOSS LOWZ magnitude and color cuts select more low-mass satellites in high-mass halos, while CMASS selection skews toward low-mass satellites in less massive halos, especially at higher redshifts. This is consistent with LOWZ selection isolating LRGs and CMASS selection including more blue galaxies.
-
-\citet{zu20} speculate that the low g-g lensing signal could be caused by BOSS CMASS galaxies residing in lower concentration halos. \citet{yuan_etal20, yuan_etal21} test concentration-based assembly bias models; summarized below), and/or not accounting for the dependence of the BOSS detection fraction at fixed stellar mass on halo properties that correlated with galaxy colors. This assessment is in qualitative agreement with the tests of assembly bias done by \citet{lange_etal19, lange_etal21a} and \citet{yuan_etal20, yuan_etal21} described below.
-
-\citet{lange_etal19} compare fits of BOSS data using a standard HOD and two decorated HOD (dHOD) models with an added assembly bias parameter (NFW concentration, $c_{\rm NFW}$, and halo spin, $\lambda$) in ``low" $(11 < \logm < 11.5)$ and ``high" $(11.5 < \logm < 12)$ stellar mass bins. They find that some form of assembly bias could *partially* account for the ``lensing is low" discrepancy, but only up to $\sim10\%$ (i.e.\ one quarter to one half of the observed 20--40\% difference), and note that \wprp alone does not constrain the values of the assembly bias parameters in their dHOD models.
-
-They also test baryonic effects with the Illustris and TNG300 simulations, and find---as with they assembly bias models they test---that baryonic effects can account for at most 10\% of the discrepancy. \citet{lange_etal19} conclude that a combination of baryonic feedback effects, assembly bias, and possible cosmological parameter revision may be required to fully resolve the ``lensing is low" discrepancy; and suggests a more comprehensive study of the impact of galaxy assembly bias is required.
-
-In a related paper \citet{lange_etal21a} study the radial and stellar mass dependence of the ``lensing is low" discrepancy using the same general analysis approach as \citet{leauthaud_etal17}. They compare three stellar mass estimates for the LOWZ sample:\ ``Wisconsin" PCA, ``Granada" photometry, and cross-correlations between DESI Legacy Imaging DR8 photometry and S82 MGC galaxies with spectroscopic redshifts, and find a lensing amplitude mismatch of $\sim35\%$ independent of both stellar mass (and also therefore of halo mass in $10^{13.3}$ to $10^{13.9}\ h^{-1} \msun$ range) and radial scale.
-
-\citet{yuan_etal20} test extended HOD models with added satellite distribution and satellite velocity bias parameters, constrained with \wprp, and a halo concentration assembly bias parameter. They focus on the CMASS sample, and their fits still yield a $\sim34\%$ ``lensing is low" discrepancy.
-
-In \citet{yuan_etal21} they test extended HOD models with an environment-based assembly bias term $(A_{\rm e})$ and a halo concentration-based term $(A)$.  They find including $A$ and constraining parameters with the redshift-space two-point correlation function (2PCF) instead of \wprp decreases the average halo mass per galaxy by 12\%, relative to a standard five-parameter HOD, which is strongly rejected. Including $A_{\rm e}$ in their model decreases the average halo mass by 10\%, while including both $A$ and $A_{\rm e}$ and constraining with the redshift-space 2PCF predicts a 26\% decrease in average halo mass. This translates to a g-g lensing signal prediction that agrees with observation within $1\sigma$, and \citet{yuan_etal21} conclude that an environmental assembly bias term is a ``physical and indispensable addition to the HOD."
-
-\section*{Preliminary modeling of the DESI LRG sample}
-
-The stated goal of \citet{zhou_etal20} is to improve HOD fits to the DESI LRG sample that use photometric redshift clustering measurements, and as such they don't consider the incompleteness of the LRG sample.
-\citet{zhou_etal20} fit \wprp measured in five redshift bins from $0.4 < z < 0.9$ with a five-parameter HOD model, and constrain HOD parameters with mocks constructed from MDPL2 simulation snapshots near redshift bin centers populated with galaxies as in \citet{zheng_etal07}.
-They find similar HOD parameters at $0.4 < z < 0.8$, and statistically significant differences in model parameters for only the highest redshift bin $(0.8 < z < 0.9)$. This is consistent with a constant clustering amplitude for LRGs over the DESI LRG sample redshift range, but without considering incompleteness this result isn't sufficient to draw definitive conclusions about the (lack of) redshift evolution of the intrinsic LRG SHMR.
-
-\citet{hernandez-aguayo_etal21} supports DESI LRG modeling beyond the HOD framework. Their focus is on large-scale galaxy clustering and generating large numbers of mocks for accurate clustering covariance measurements, but the conclusions support more nuanced galaxy--halo connection modeling than the standard HOD.
-
-They apply the {\sc Galform} \citep{cole_etal00} semi-analytic model (SAM) to the Planck-Millennium simulation, which they claim has sufficient resolution to make robust predictions for galaxy masses down to $10^7\ h^{-1}\msun$. {\sc Galform} predicts absolute magnitudes with dust attenuation, which are then converted to apparent magnitudes at various redshift snapshots, enabling DESI LRG selection cuts to be applied to the mocks.
-%underpredicts LRG abundance relative to estimates from Zhou+ (2020) photo-zs
-
-The most relevant conclusions from \citet{hernandez-aguayo_etal21} are:
-\begin{enumerate}
-\item
-The halo occupation of central galaxies does *not* reach unity for the most massive halos and drops with increasing mass, indicative of a non-trivial LRG--halo connection that is not modeled well with a standard HOD.
-\item
-DESI LRG selection criteria excludes a small but important fraction of the most massive galaxies ($\logm > 11.15$).
-\item
-Stellar mass is an insufficient proxy to select LRGs; all bright galaxies in the $W1$-band luminosity function are LRGs, compared to only about half of the galaxies at the bright end of the $r$-band luminosity function.
-\item
-Comparing the HOD and subhalo mass functions of stellar mass-selected galaxies with those of LRG samples shows the DESI LRG selection cuts affect the selection of subhalos populated by LRGs; (sub)halo mass alone is not sufficient to determine whether a subhalo hosts an LRG.
-\end{enumerate}
-% Find clustering signal difference of 10\% at $0.6 < z < 0.74$ and up to 150\% at $z=0.93$
-
-\section*{Motivation for SHAM + age matching modeling of DESI LRGs}
+Color matching assumes a correlation between rest-frame galaxy color at fixed absolute magnitude and some proxy for the age of the halo in which each mock galaxy resides, with redder colors generally assigned to older halos. The first step of color assignment is to determine the best proxy for halo age. Previous implementations of this technique at $z\sim0$ using SDSS data have used TODO (refs).
+%
+\begin{equation}\label{eq:zstarve}
+\zstarve \equiv \max\{\zchar,\, \zacc,\, \zform\}.
+\end{equation}
+%
+\noindent In Equation~\ref{eq:zstarve}:
 
 \begin{itemize}
-\item Smaller volume simulations (Bolshoi-Planck) with mass resolution sufficient for subhalo detection and tracking across snapshots enables small-scale clustering analysis that can't be done with large-volume mocks for BAO studies.
-\item Galaxy luminosity and especially color is difficult to model analytically; SHAM allows luminosity functions and color distributions from photometry to be reproduced for (i.e.\ mapped onto) halo distributions with precisely known statistics (from $N$-body simulations).
-\item Standard HOD analytic models require assumptions about functional form and number of free parameters, and don't necessarily account for (unknown) incompletenesses in the galaxy samples to which they are applied.
-\item Empirical forward modeling provides a way to quantify incompleteness, satellite fraction, etc.\ of LRG sample using the full galaxy population (DESI Legacy Survey photometry).
-\item Similar method has been used to model DESI-like BGS sample \citep{safonova_etal20}.
+\item \zchar is either the redshift at which a halo's mass first exceeds some characteristic value, \mchar, or the redshift of the relevant simulation snapshot (\zsim) for halos that never achieve \mchar,
+%
+\item \zacc is the redshift at which a subhalo accretes onto a parent halo (for host halos ${\zacc=\zsim}$), and
+%
+\item \zform is the ``formation" redshift at which a halo transitions from the fast to slow accretion regime.
 \end{itemize}
+\noindent We use same definition of \zform as Hearin \& Watson 2013, motivated by Wechsler+ 2002:
+%
+\begin{equation}\label{eq:zform}
+\zform \equiv \frac{c_{\rm vir}}{4.1 a_0} - 1,
+%c_{\rm vir} &= \frac{R_{\rm vir}}{R_{\rm s}}\ {\rm at}
+%\begin{cases}
+%\zsim\ {\rm (host\ halos)} \\
+%\zacc\ {\rm (subhalos)}
+%\end{cases}, \\
+%a_0 &=
+%\begin{cases}
+%\zsim\ {\rm (host\ halos)} \\
+%\zacc\ {\rm (subhalos)}
+%\end{cases}.
+\end{equation}
+%
+\noindent where ${c_{\rm vir} = R_{\rm vir}/R_{\rm s}}$ is a halo's concentration at the time of observation, indicated by $a_0$. For host halos $a_0$ is the scale factor of the relevant simulation snapshot, while for subhalos $a_0$ is the scale factor at the time of accretion: ${\zacc = 1/{a_0} - 1}$. $R_{\rm vir}$ is the virial radius of a halo, and $R_{\rm s}$ is the NFW scale radius.
+
+Hearin \& Watson 2013 use ${\mchar=10^{12}~\hmsun}$ TODO...
+
+%\begin{equation}\label{eq:}
+%\end{equation}
 
 
-\input{methods}
 
-\small
-\bibliography{/Users/aberti/Desktop/Research/refs}
+%Free model parameters (C=continuous, D=discrete):
+%	(D) (sub)halo property for SHAM: \vpeak, \vmax, \vmaxmpeak
+%	(D) (sub)halo property for age-matching (color assignment): \zstarve, \zform, \zacc, \zchar
+%	(C) amplitude and (D) functional form Vpeak--luminosity correlation
+%	(C) amplitude and (D) functional form of photo-z errors in model (constrained by data correlation function)
+%
+%For each relevant simulation snapshot and corresponding photo-z bin:
+%	For each TBD (sub)halo property for SHAM:
+%		For each relevant data sample \neff (north/south and optical/IR parent sample):
+%			For each TBD implementation of SHAM scatter:
+%				select (sub)halo catalog and assign luminosities
+%				If chosen photo-z implementation is TBD:
+%					For each TBD photo-z error implementation option:
+%						compute full sample clustering and compare to data (no luminosity bins)
+%				Else:	
+%					compute full sample clustering with chosen photo-z error implementation and compare to data
+%
+%				compute luminosity-binned clustering (with chosen photo-z error implementation) and compare to data
+%				assign relevant color(s) to selected (sub)halo catalog in narrow (TBD) luminosity bins
+%				compare model CMD to data
+%				TBD: compute color-binned clustering (with chosen photo-z error implementation) and compare to data
+
+%DATA CLUSTERING STRUCTURE:
+%	BASEDIR /
+%	clustering /
+%	z-band apparent mag cut /	
+%	r OR W1 absolute mag cut / 
+%	full sample OR absolute mag bins / 
+%	wp /
+%	wp by field (north, south), photo-z bin, sample type (GxG, LxL, LxnL), pimax (<=150 Mpc/h)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{}\label{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{}\label{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Summary and Conclusions}\label{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\acknowledgements
+
+%Legacy Surveys DR9
+
+%Work done at Argonne National Laboratory was supported by the U.S. Department of Energy, Office of Science, Office of Nuclear Physics, under contract DE-AC02-06CH11357. We gratefully acknowledge use of the Bebop cluster in the Laboratory Computing Resource Center at Argonne National Laboratory. Computational work for this paper was also performed on the Phoenix cluster at Argonne National Laboratory, jointly maintained by the Cosmological Physics and Advanced Computing (CPAC) group and by the Computing, Environment, and Life Sciences (CELS) directorate.
+%PB was partially funded by a Packard Fellowship, Grant \#2019-69646.
+
+%Funding for SDSS-III has been provided by the Alfred P.\ Sloan Foundation, the Participating Institutions, the National Science Foundation, and the U.S.\ Department of Energy Office of Science. The SDSS-III website is http://www.sdss3.org/.
+%SDSS-III is managed by the Astrophysical Research Consortium for the Participating Institutions of the SDSS-III Collaboration including the University of Arizona, the Brazilian Participation Group, Brookhaven National Laboratory, Carnegie Mellon University, University of Florida, the French Participation Group, the German Participation Group, Harvard University, the Instituto de Astrofisica de Canarias, the Michigan State/Notre Dame/JINA Participation Group, Johns Hopkins University, Lawrence Berkeley National Laboratory, Max Planck Institute for Astrophysics, Max Planck Institute for Extraterrestrial Physics, New Mexico State University, New York University, Ohio State University, Pennsylvania State University, University of Portsmouth, Princeton University, the Spanish Participation Group, University of Tokyo, University of Utah, Vanderbilt University, University of Virginia, University of Washington, and Yale University.
+
+The CosmoSim database used in this paper is a service by the Leibniz-Institute for Astrophysics Potsdam (AIP). The MultiDark database was developed in cooperation with the Spanish MultiDark Consolider Project CSD2009-00064.
+The authors gratefully acknowledge the Gauss Centre for Supercomputing e.V.\ (www.gauss-centre.eu) and the Partnership for Advanced Supercomputing in Europe (PRACE, www.prace-ri.eu) for funding the MultiDark simulation project by providing computing time on the GCS Supercomputer SuperMUC at Leibniz Supercomputing Centre (LRZ, www.lrz.de).
+%The Bolshoi simulations have been performed within the Bolshoi project of the University of California High-Performance AstroComputing Center (UC-HiPACC) and were run at the NASA Ames Research Center.
+
+\bibliography{refs}
 
 \end{document}
-
-
-%Safonova+ 2020 DESI BGS SHAM mock
-
-
-%Saito+ 2018
-
-
-
-
-%Reid+ 2014 (https://doi.org/10.1093/mnras/stu1391)
-%model dn/dz by downsampling redshift-independent HOD
-%assume CMASS is single, homogeneous sample (so don't assume sample is complete, but do assume representative downsampling, which is questionable)
-%use of non-evolving HOD motivated by observation that CMASS clustering does not vary strongly w/ redshift
-%random downsampling does not modify clustering, so R14 find constant clustering amplitude (and therefore constant halo mass) w/ redshift
-
-%Leauthaud+ 2016 (https://doi.org/10.1093/mnras/stw117)
-%The Stripe 82 Massive Galaxy Project---II.\ Stellar mass completeness of spec-z BOSS samples
-%birth parameter b_1000:\ ratio of average SFR within past 1 Gyr to SFR average over galaxy's history
-%b_1000 estimates from Blanton & Roweis 2007 KCORRECT package
-%estimate BOSS completeness using analysis from other studies
-%Miyatake+ (2015) constrain high-mass end of SHMR via HOD model with subsamples of CMASS
-%More+ (2015) assume incompleteness is random downsampling
-%Shankar+ (2014)
-%HOD modeling of wp of CMASS at 0.4 < z < 0.6 and 0.6 < z < 0.8
-%impose stellar mass cut log M* > 11.5 on both redshift samples
-%assume above samples are complete for sake of HOD analysis
-
-%Bundy+ (2017) (https://doi.org/10.3847/1538-4357/aa9896)
-%The Stripe 82 Massive Galaxy Project---III.\ A lack of growth among massive galaxies
-%construct mass-limited sample of S82-MGC galaxies at log M* > 11.2
-%55\% spec-zs for sample
-%41,770 objects
-%measure SMF over 0.3 < z < 0.65
-%find no growth in typical stellar mass of massive galaxies over redshift interval
-
-%Stoppacher+ 2019 (https://doi.org/10.1093/mnras/stz797)
-
-
-%Lange+ 2021 (https://arxiv.org/pdf/2101.12261.pdf)
-%BOSS LOWZ simulation-based RSD analysis
-
-%Dey+ 2019 (https://doi.org/10.3847/1538-3881/ab089d)
-%Overview of DESI Legacy Imaging Surveys
-
-
-%SHAM techniques
-
-%Hearin+ 2013 (https://doi.org/10.1093/mnras/stt755)
-%SHAM beyond clustering: new tests of galaxy-halo abundance matching with galaxy groups
-
-%Hearin & Watson 2013 (https://doi.org/10.1093/mnras/stt1374)
-%Dark side of galaxy color
-%Primary calculation of z_starve for abundance matching
-
-%Hearin+ 2014 (https://doi.org/10.1093/mnras/stu1443)
-%Dark side of galaxy color: evidence from new SDSS measurements of galaxy clustering and lensing
-
-%Campbell+ 2015 (https://doi.org/10.1093/mnras/stv1091)
-%Assessing color-dependent occupation statistics inferred from galaxy group catalogs
-
-%Lehmann+ 2017 (https://doi.org/10.3847/1538-4357/834/1/37)
-%Concentration dependence of galaxy-halo connection:\ modeling assembly bias w/ abundance matching
-%Create mocks via abundance matching as in Behroozi+ (2010) and Reddick+ (2013)
-%deconvolve scatter from luminosity function
-%abundance matching luminosity with halo proxy
-%replace scatter by adding log-normal scatter to galaxy catalog
