@@ -1,14 +1,21 @@
 *.jpg
 *.jpeg
+
 *.DS_Store
+
 *.npy
 *.pyc
+
+*.pdf
+*.fits
+
 *.aux
 *.log
 *.out
 *.gz
-*.pdf
-*.fits
+*.bbl
+*.brf
+*.blg
 
 *.ipynb_checkpoints/sandbox-checkpoint.ipynb
 *.ipynb_checkpoints/*

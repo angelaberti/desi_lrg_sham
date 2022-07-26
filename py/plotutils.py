@@ -1,6 +1,27 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+
+plot_settings = {
+    "font.size": 16,
+    "axes.linewidth": 1.0,
+    "xtick.major.size": 6.0,
+    "xtick.minor.size": 4.0,
+    "xtick.major.width": 1.5,
+    "xtick.minor.width": 1.0,
+    "xtick.direction": "in", 
+    "xtick.minor.visible": True,
+    "xtick.top": True,
+    "ytick.major.size": 6.0,
+    "ytick.minor.size": 4.0,
+    "ytick.major.width": 1.5,
+    "ytick.minor.width": 1.0,
+    "ytick.direction": "in", 
+    "ytick.minor.visible": False,
+    "ytick.right": True,
+}
+
+
 fig_labels = {"vpeak"     : r"$v_{\rm peak}\ [{\rm km\ s}^{-1}]$",
               "log_vpeak" : r"$\log(v_{\rm peak}/{\rm km\ s}^{-1})$",
               "vmax"      : r"$v_{\rm max}\ [{\rm km\ s}^{-1}]$",

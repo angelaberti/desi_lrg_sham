@@ -99,10 +99,9 @@ def extra_masks(cat, d=None, zrange=None, quiet=False, zkcorr=None, zphot_tag="Z
     return mask
 
 
-
-#-- Rongpu's 2022 DESI target selection paper
+#-- "main optical" LRG selection
+#-- https://iopscience.iop.org/article/10.3847/2515-5172/abc0f4
 def desi_lrg_mask_optical(cat, d="south", zrange=None, zkcorr=None, quiet=False):
-    """optical LRG selection mask (Zhu+ 2020) for a given catalog"""
     g  = 2.5*( 9 - np.log10(cat["FLUX_G"]/cat["MW_TRANSMISSION_G"]) )
     r  = 2.5*( 9 - np.log10(cat["FLUX_R"]/cat["MW_TRANSMISSION_R"]) )
     z  = 2.5*( 9 - np.log10(cat["FLUX_Z"]/cat["MW_TRANSMISSION_Z"]) )
@@ -119,13 +118,42 @@ def desi_lrg_mask_optical(cat, d="south", zrange=None, zkcorr=None, quiet=False)
         ]
     #-- NOTE: BRIGHT, GALAXY, CLUSTER, and bright GAIA star masking already applied to full photometric sample
 
-    cc = [((z < 21.0) | (zfiber < 22.0)),
-          (z - W1) > (0.8*(r - z) - 0.8),
-          ((g - W1 > 2.5) & (g - r > 1.3)) | (r - W1 > 1.7),
-          ((z < 20.2) & (r - z > 0.45*(z - 17.20)) & (r - z > 0.19*(z - 14.17))) | ((z >= 20.2) & (((z - 23.18)/1.3)**2 + (r - z + 2.5)**2 > 4.48**2)),
+    cc = [(zfiber < 21.5),
+          (z - W1) > (0.8*(r - z) - 0.6),          
+          ( ((g - W1) > 2.6) & ((g - r) > 1.4) ) | ((r - W1) > 1.8),
+          (r - z) > 0.7,          
+          ( (r - z) > 0.45*(z - 16.83) ) & ( (r - z) > 0.19*(z - 13.80) ),
           ]
 
-    return np.array( cc[0] & cc[1] & cc[2] & cc[3] & qq[0] & qq[1] & qq[2] & qq[3] )
+    return np.array( cc[0] & cc[1] & cc[2] & cc[3] & cc[4] & qq[0] & qq[1] & qq[2] & qq[3] )
+
+
+###-- Rongpu's 2022 DESI target selection paper
+##def desi_lrg_mask_optical(cat, d="south", zrange=None, zkcorr=None, quiet=False):
+##    """optical LRG selection mask (Zhu+ 2020) for a given catalog"""
+##    g  = 2.5*( 9 - np.log10(cat["FLUX_G"]/cat["MW_TRANSMISSION_G"]) )
+##    r  = 2.5*( 9 - np.log10(cat["FLUX_R"]/cat["MW_TRANSMISSION_R"]) )
+##    z  = 2.5*( 9 - np.log10(cat["FLUX_Z"]/cat["MW_TRANSMISSION_Z"]) )
+##    W1 = 2.5*( 9 - np.log10(cat["FLUX_W1"]/cat["MW_TRANSMISSION_W1"]) )
+##
+##    zfiber    = 2.5*( 9 - np.log10(cat["FIBERFLUX_Z"]/cat["MW_TRANSMISSION_Z"]) )
+##    zfibertot = 2.5*( 9 - np.log10(cat["FIBERTOTFLUX_Z"]) )
+##    
+##    #-- quality cuts for north and south fields
+##    qq = [ (cat["FLUX_IVAR_R"] > 0) & (cat["FLUX_R"] > 0), ## r-band quality
+##           (cat["FLUX_IVAR_Z"] > 0) & (cat["FLUX_Z"] > 0) & (cat["FIBERFLUX_Z"] > 0), ## z-band quality
+##           (cat["FLUX_IVAR_W1"] > 0) & (cat["FLUX_W1"] > 0), ## W1-band quality
+##           (zfibertot > 17.5), ## remove bright stars
+##        ]
+##    #-- NOTE: BRIGHT, GALAXY, CLUSTER, and bright GAIA star masking already applied to full photometric sample
+##
+##    cc = [((z < 21.0) | (zfiber < 22.0)),
+##          (z - W1) > (0.8*(r - z) - 0.8),
+##          ((g - W1 > 2.5) & (g - r > 1.3)) | (r - W1 > 1.7),
+##          ((z < 20.2) & (r - z > 0.45*(z - 17.20)) & (r - z > 0.19*(z - 14.17))) | ((z >= 20.2) & (((z - 23.18)/1.3)**2 + (r - z + 2.5)**2 > 4.48**2)),
+##          ]
+##
+##    return np.array( cc[0] & cc[1] & cc[2] & cc[3] & qq[0] & qq[1] & qq[2] & qq[3] )
 
 
 # #-- https://arxiv.org/pdf/2001.06018.pdf

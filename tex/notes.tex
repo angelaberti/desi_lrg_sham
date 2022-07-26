@@ -1,11 +1,13 @@
 
-\documentclass[10pt, oneside]{}   	% use "amsart" instead of "article" for AMSLaTeX format
+\documentclass[10pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
 \usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry} %, headsep=.15in, footskip=.3in]{geometry}
 \geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
 %\geometry{landscape}                		% Activate for for rotated page geometry
 %\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
 \usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
-								% TeX will automatically convert eps --> pdf in pdflatex		
+								% TeX will automatically convert eps --> pdf in pdflatex
+\input{../../tex/defs}								
+										
 \usepackage{xspace}
 \usepackage{amssymb}
 \usepackage{amsmath}
@@ -16,15 +18,15 @@
 \setlength{\bibsep}{0pt}
 
 \bibliographystyle{aasjournal}
-\usepackage[colorlinks,citecolor=blue]{hyperref}
+%\usepackage[colorlinks,citecolor=blue]{hyperref}
 %\usepackage[style=authoryear,natbib=true]{biblatex}
 
-\newcommand{\degsq}{\ensuremath{{\rm deg}^2}\xspace}
-\newcommand{\logm}{\ensuremath{\log(M_*/\msun)}\xspace}
-\newcommand{\mh}{\ensuremath{M_{\rm h}}\xspace}
-\newcommand{\msun}{\ensuremath{{\rm M}_\odot}\xspace}
-\newcommand{\Mpch}{\ensuremath{h^{-1}{\rm Mpc}}\xspace}
-\newcommand{\wprp}{\ensuremath{\omega_{\rm p}(r_{\rm p})}\xspace}
+%\newcommand{\degsq}{\ensuremath{{\rm deg}^2}\xspace}
+%\newcommand{\logm}{\ensuremath{\log(M_*/\msun)}\xspace}
+%\newcommand{\mh}{\ensuremath{M_{\rm h}}\xspace}
+%\newcommand{\msun}{\ensuremath{{\rm M}_\odot}\xspace}
+%\newcommand{\Mpch}{\ensuremath{h^{-1}{\rm Mpc}}\xspace}
+%\newcommand{\wprp}{\ensuremath{\omega_{\rm p}(r_{\rm p})}\xspace}
 
 \newcommand{\aj}{AJ}
 \newcommand{\apj}{ApJ}
@@ -136,7 +138,7 @@ They directly measure the selection function of LOWZ centrals by comparing the s
 
 The interpretation of these results is that the BOSS LOWZ magnitude and color cuts select more low-mass satellites in high-mass halos, while CMASS selection skews toward low-mass satellites in less massive halos, especially at higher redshifts. This is consistent with LOWZ selection isolating LRGs and CMASS selection including more blue galaxies.
 
-\citet{zu20} speculate that the low g-g lensing signal could be caused by BOSS CMASS galaxies residing in lower concentration halos. \citet{yuan_etal20, yuan_etal21} test concentration-based assembly bias models; summarized below), and/or not accounting for the dependence of the BOSS detection fraction at fixed stellar mass on halo properties that correlated with galaxy colors. This assessment is in qualitative agreement with the tests of assembly bias done by \citet{lange_etal19, lange_etal21a} and \citet{yuan_etal20, yuan_etal21} described below.
+\citet{zu20} speculate that the low g-g lensing signal could be caused by BOSS CMASS galaxies residing in lower concentration halos, and/or not accounting for the dependence of the BOSS detection fraction at fixed stellar mass on halo properties that correlated with galaxy colors. This assessment is in qualitative agreement with the tests of assembly bias done by \citet{lange_etal19, lange_etal21a} and the concentration-based assembly bias models of \citet{yuan_etal20, yuan_etal21} described below.
 
 \citet{lange_etal19} compare fits of BOSS data using a standard HOD and two decorated HOD (dHOD) models with an added assembly bias parameter (NFW concentration, $c_{\rm NFW}$, and halo spin, $\lambda$) in ``low" $(11 < \logm < 11.5)$ and ``high" $(11.5 < \logm < 12)$ stellar mass bins. They find that some form of assembly bias could *partially* account for the ``lensing is low" discrepancy, but only up to $\sim10\%$ (i.e.\ one quarter to one half of the observed 20--40\% difference), and note that \wprp alone does not constrain the values of the assembly bias parameters in their dHOD models.
 
@@ -183,21 +185,19 @@ Comparing the HOD and subhalo mass functions of stellar mass-selected galaxies w
 \end{itemize}
 
 
-\input{methods}
-
 \small
-\bibliography{/Users/aberti/Desktop/Research/refs}
+\bibliography{/Users/aberti/Desktop/research/tex/refs}
 
 \end{document}
 
+%Saito+ 2016
+%NOTES in odt doc
 
 %Safonova+ 2020 DESI BGS SHAM mock
+%NOTES in odt doc
 
-
-%Saito+ 2018
-
-
-
+%DeRose+ 2021
+%NOTES in odt doc
 
 %Reid+ 2014 (https://doi.org/10.1093/mnras/stu1391)
 %model dn/dz by downsampling redshift-independent HOD
@@ -227,9 +227,9 @@ Comparing the HOD and subhalo mass functions of stellar mass-selected galaxies w
 
 %Stoppacher+ 2019 (https://doi.org/10.1093/mnras/stz797)
 
-
 %Lange+ 2021 (https://arxiv.org/pdf/2101.12261.pdf)
 %BOSS LOWZ simulation-based RSD analysis
+
 
 %Dey+ 2019 (https://doi.org/10.3847/1538-3881/ab089d)
 %Overview of DESI Legacy Imaging Surveys
@@ -254,5 +254,5 @@ Comparing the HOD and subhalo mass functions of stellar mass-selected galaxies w
 %Concentration dependence of galaxy-halo connection:\ modeling assembly bias w/ abundance matching
 %Create mocks via abundance matching as in Behroozi+ (2010) and Reddick+ (2013)
 %deconvolve scatter from luminosity function
-%abundance matching luminosity with halo proxy
+%abundance match luminosity with halo proxy
 %replace scatter by adding log-normal scatter to galaxy catalog

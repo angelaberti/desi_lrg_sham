@@ -28,6 +28,7 @@ TODO
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 halos = parent halos + subhalos
+
 All subhalos are halos, but not all halos are subhalos.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -37,31 +38,64 @@ All subhalos are halos, but not all halos are subhalos.
 TODO
 
 \subsection{Photometry and redshift estimates}\label{subsec:photometry}
-We use publicly available catalogs from the ninth data release (DR9) of the DESI Legacy Imaging Surveys (Dey+ 2019). The Legacy Surveys provide optical imaging in the $g$, $r$, and $z$ bands is from a combination of three public surveys: the DECam Legacy Survey (DECaLS; ref),
+
+We use publicly available catalogs from the ninth data release (DR9) of the DESI Legacy Imaging Surveys (Dey+ 2019). The Legacy Surveys provide optical imaging in the $g$, $r$, and $z$ bands is from a combination of three public surveys:\ the DECam Legacy Survey (DECaLS; ref),
 %conducted with the Dark Energy Camera (DECam) on the Blanco 4-meter telescope at the Cerro Tololo Inter-American Observatory in Chile;
 the Beijing-Arizona Sky Survey (BASS; ref),
 %conducted with the 90Prime camera at the prime focus of the Bok 2.3-meter telescope at Kitt Peak National Observatory (KPNO);
 and the Mayall $z$-band Legacy Survey (MzLS; ref).
 %, conducted with the MOSAIC-3 camera at the prime focus of the 4-meter Mayall telescope at KPNO.
-14,000 square degrees of sky visible from the northern hemisphere
-2 contiguous regions within the northern and southern galactic caps
+DR9 also includes four mid-infrared bands from the Wide-field Infrared Survey Explorer (WISE; ref), although only the 3.4-$\upmu$m $W1$-band is relevant for DESI LRG target selection.
+
+In total DR9 covers 14,000 square degrees visible from the northern hemisphere, comprised of two contiguous regions within the northern and southern galactic caps. To avoid effects from systematic differences among data from the three component optical surveys, we limit our study to the approximately 9,000 square degrees covered by DECaLS.
+
+\citet{zhou_etal20b} compute photometric redshifts for the full catalog of DECaLS DR8 objects using a random forest regression machine learning algorithm. They estimate their redshifts are accurate for objects with apparent $z$-band magnitude $z < 21$, well beyond the $z<20.7$ cut we use to select our target galaxy samples, described in \S\ref{subsec:parent_samples} below.
 
 
-DR9 also includes four mid-infrared bands from the Wide-field Infrared Survey Explorer (WISE; ref), although only the 3.4-$\upmu$m $W1$-band is relevant DESI LRG target selection.
+\subsection{DESI LRG targets}\label{subsec:lrg}
+
+The DESI LRG sample is designed to be a cosmological tracer spanning the redshift range $\sim0.4 < z \lesssim 1.0$, between the low-redshift Bright Galaxy Survey (BGS) tracer sample at $z\lesssim0.4$ (ref?), and the Emission Line Galaxy (ELG) sample at  $\sim1.0 < z \lesssim 1.6$ (ref?).
+
+TODO: Selection optimized to obtain roughly TODO targets per square degree.
+
+IR LRG selection \citep{zhou_etal20b}:
+\begin{subequations}\label{eq:lrg_ir}
+  \begin{align}
+   & z - W1 > 0.8 \times (r - z) - 0.6, \\
+   & ( g - W1 > 2.9)\ {\rm OR}\ (r - W1 > 1.8), \\
+   \begin{split}
+   & \{ ( r - W1 > 1.8 \times (W1 - 17.14) )\ {\rm AND} \\
+   & \phantom{00} ( r - W1 > W1 - 16.33 ) \}\ {\rm OR}\ ( r - W1 > 3.3 ),
+  \end{split} \\
+   & z_{\rm fiber} < 21.6.
+  \end{align}
+\end{subequations}
+
+Optical LRG selection \citep{zhou_etal20a}:
+\begin{subequations}\label{eq:lrg_opt}
+  \begin{align}
+   & z - W1 > 0.8\times(r - z) - 0.6, \\
+   \begin{split}
+   & \{ (g - W1 > 2.6)\ {\rm AND}\ (g - r > 1.4) \}\ {\rm OR} \\
+   & \phantom{00} (r - W1 > 1.8),
+   \end{split} \\
+   \begin{split}
+   & ( r - z > 0.45\times(z - 16.83) )\ {\rm AND} \\
+   & \phantom{00} (r - z > 0.19\times(z - 13.80) ),
+   \end{split} \\
+   & r - z > 0.7, \\   
+   & z_{\rm fiber} < 21.5.
+   \end{align}
+\end{subequations}
+
+TODO: brief explanation of purpose of various cuts (why ``optical" and ``IR"?)
 
 
-Zhou+ 2020 compute photometric redshifts for the full catalog of DECaLS DR8 objects using a random forest regression machine learning algorithm. They estimate their redshifts to be accurate for objects with apparent $z$-band magnitude $z < 21$, well beyond the $z$-band cut we use to select our target galaxy samples, described in \S\ref{subsec:parent_samples} below.
-
-
-\subsection{Target galaxy samples}\label{subsec:parent_samples}
-
-One of the primary goals of this work is to develop magnitude-limited mock galaxy catalogs that represent a superset of the color-magnitude space occupied by DESI LRGs.
+\subsection{Parent galaxy samples}\label{subsec:parent_samples}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\setlength\extrarowheight{2pt}
-%\setlength{\tabcolsep}{5pt}
 \begin{deluxetable}{ r p{6.5cm} }%[h!]
-\tablecaption{TODO
+\tablecaption{For additional details about these masks see legacysurvey.org/dr9/bitmasks/
 \label{tab:masks}
 }
 \tablehead{
@@ -85,62 +119,100 @@ One of the primary goals of this work is to develop magnitude-limited mock galax
 \enddata
 \end{deluxetable}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-For additional details about these masks see legacysurvey.org/dr9/bitmasks/
 
-Our parent galaxy samples are defined by the following cuts:
-$z < 20.7$
+A primary goals of this work is to create mock galaxy catalogs that are both statistically complete and represent a superset of the color--magnitude space occupied by DESI LRG targets. Selection of DESI LRG targets is based entirely on $g$, $r$, $z$, and $W1$ apparent magnitudes (see \S\ref{subsec:lrg_select}), so we would ideally like to create mock catalogs where every mock galaxy has an apparent magnitude in each of these bands. SHAM, however, exploits the correlation between some physical halo property (e.g.\ circular velocity) and a physical galaxy property independent of redshift (e.g.\ luminosity). We therefore want to train our mock catalogs on galaxy samples that are complete to an \emph{absolute} magnitude threshold that includes all DESI LRGs (in the relevant redshift bin; see below).
 
-We also remove stars by excluding catalog sources of \texttt{TYPE = PSF}.
+To select suitable parent galaxy samples we first apply an apparent $z$-band magnitude cut of $z < 20.7$, and remove stars by excluding catalog sources with ${\rm TYPE} = \texttt{PSF}$. We also apply the masks described in Table~\ref{tab:masks}, which are provided with DECaLS DR9, to remove sources affected by bad pixels or contamination from bright stars. Finally, a geometric mask is applied to ensure complete angular coverage by the catalogs of random points provided with DR9 (see \S\ref{subsec:wprp}). The resulting sample contains (at least) $\mathcal{O}(10^9)$ galaxies, sufficient to divide it into redshift bins and maintain low statistical error. We initially tested six redshift bins of width $\Delta\zphot=0.1$ between $\zphot=0.4$ and $\zphot=1.0$, but found that DECaLS DR9 photometry is only deep enough to apply our model up to $\zphot \sim 0.7$. At $\zphot \gtrsim 0.7$ the data are incomplete above the absolute magnitude threshold that encompasses DESI LRGs. We therefore limit our study to three redshift bins of $\Delta\zphot=0.1$ within $0.4 < \zphot < 0.7$.
 
-geometric mask to ensure complete angular coverage by available randoms provided with DECaLS catalogs
+For each redshift bin we compute $z$- and $W1$-band magnitudes using \citet{zhou_etal20b} photometric redshifts to obtain distance moduli. We then $K$-correct absolute magnitudes (see step~\ref{step:neff} of \S\ref{subsec:luminosity_assign}) to the redshift of the relevant simulation snapshot, \zsim (see \S\ref{sec:sims}). For each redshift bin we use the snapshot closest to the median \zphot of the data, e.g.\ galaxies in the ${0.4 < \zphot < 0.5}$ bin are $K$-corrected to $\zsim=0.42531$.
 
-r-band and W1-band absolute magnitude cuts
-	eliminate fainter galaxies (with larger photo-z errors) that don't overlap relevant LRG magnitude range
-	smaller parent sample size improves computation time
-photo-z redshift bins (nominal range +/- 150 Mpc/h)
+The final step in selecting parent galaxy samples is to identify $z$- and $W1$-band absolute magnitude cuts in each redshift bin that yield complete samples which also include the full absolute magnitude range of DESI LRG targets in that bin. Figure~\ref{fig:abs_mag_cuts} shows histograms of $K$-corrected absolute magnitudes for all $z<20.7$ DECaLS DR9 galaxies in each redshift bin. For each magnitude and redshift bin combination we identify an absolute magnitude cut (dashed black lines in Figure~\ref{fig:abs_mag_cuts}) that eliminates fainter galaxies where DECaLS DR9 becomes incomplete, while preserving $\gtrsim99\%$ of DESI LRG targets (solid orange and hatched purple histograms).
+Table~\ref{tab:parent_samples} lists the details of each parent galaxy sample, including the relevant absolute magnitude cut, sample size, effective number density, and the included fractions of IR- and optically-selected DESI LRG targets. Besides enforcing statistically complete parent samples, these magnitude cuts also eliminate galaxies with larger photometric redshift errors, increasing the accuracy of clustering measurements (see \S\ref{sec:wprp}).
 
-Data samples:
-	fields: 2 (north, south)
-	absolute magnitude cuts: 2 (r, W1)
-	photo-z bins: 4-6 ( (0.3,) 0.4, 0.5, 0.6, 0.7, 0.8(, 0.9) )
-TOTAL: 2 x 2 x 4(,5,6) = 16(,20,24)
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{../figures/abs_mag_cuts.png}
+\caption{Histograms of $K$-corrected $z$-band (left column) and $W1$-band (right column) absolute magnitudes for the three redshift bins in our study:\ ${0.4 < \zphot < 0.5}$ (top), ${0.5 < \zphot < 0.6}$ (middle), and ${0.6 < \zphot < 0.7}$ (bottom). Each panel shows the distribution of all galaxies with $z<20.7$ (solid gray), as well as the distributions of IR-selected (solid orange; see Eq.~\ref{eq:lrg_ir}) and optically-selected (hatched purple; see Eq.~\ref{eq:lrg_opt}) DESI LRG targets. The dashed black line in each panel is the absolute magnitude cut that defines each (nearly) statistically complete parent galaxy sample for our model. At fainter magnitudes (left of the cut, at or near where each distribution peaks) the DECaLS DR9 sample becomes incomplete.
+}
+\label{fig:abs_mag_cuts}
+\end{figure}
 
-TODO: summary table of parent data samples?
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{deluxetable*}{ r r r r c c c }
+\tablecaption{Parent galaxy samples and corresponding simulation snapshot redshifts for training our SHAM and age-matching model.
+\label{tab:parent_samples}
+}
+\tablehead{
+\colhead{\multirow{2}{*}{Redshift bin}} & \colhead{\multirow{2}{*}{\zsim}} & \colhead{\multirow{2}{*}{Luminosity cut\tablenotemark{a}}} & \colhead{\multirow{2}{*}{$N_{\rm gal}$}} & \colhead{\neff} & \multicolumn{2}{c}{Included fraction of DESI LRG targets} \\
+\colhead{} & \colhead{} & \colhead{} & \colhead{} & \colhead{$[\times 10^{-3}\ h^3\ {\rm Mpc}^{-3}]$} & \colhead{Optical selection} & \colhead{IR selection}
+}
+\startdata
+\multirow{2}{*}{$0.4 < \zphot < 0.5$} & \multirow{2}{*}{0.42531} & $^{0.43}M_z < -21.60$ & 8,314,309 & 5.60 & 0.992 & 0.982 \\
+& & $^{0.43}M_{W1} < -22.25$ & 7,565,153 & 4.33 & 0.992 & 0.992 \\
+\vspace{-2ex} \\
+\hline
+\vspace{-2ex} \\
+\multirow{2}{*}{$0.5 < \zphot < 0.6$} & \multirow{2}{*}{0.52323} & $^{0.52}M_z < -21.60$ & 7,804,346 & 2.86 & 0.992 & 0.988 \\
+& & $^{0.52}M_{W1} < -22.85$ & 4,909,857 & 2.01 & 0.992 & 0.992 \\
+\vspace{-2ex} \\
+\hline
+\vspace{-2ex} \\
+\multirow{2}{*}{$0.6 < \zphot < 0.7$} & \multirow{2}{*}{0.62813} & $^{0.63}M_z < -21.85$ & 6,548,126 & 1.46 & 0.994 & 0.990 \\
+& & $^{0.63}M_{W1} < -23.15$ & 4,758,470 & 1.12 & 0.993 & 0.994 \\
+\enddata
+\tablenotetext{a}{$K$-correction redshifts are rounded to two decimal places for clarity, e.g., $^{0.43}M_z$ indicates absolute $z$-band magnitudes are $K$-corrected to $\zsim=0.42531$.}
+\end{deluxetable*}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-
-%For each of the above 16(,20,24) data samples:
-%	compute full sample (no abs mag bins) wp(rp) (cross-correlation of strict photo-z bin with padded bin)
-%		FINAL cuts (0.4 < zphot < 0.5; approx. equal parent sample sizes):
-%			Mr < -20.5
-%			MW1 < -21.8
-%			above are IN PROGRESS for zphot=(0.4,0.5) NORTH
-%	compute wp(rp) in TBD absolute magnitude bins (r, W1)
-%		2 or 3 bins depending on samples sizes and/or abs mag range
-%	compute full sample luminosity function
-%	compute full sample effective galaxy number density as function of progressively fainter: neff(< Mx)
-%		ng_eff(< Mx) = sum( 1 / (angular_survey_area*Veff) )
-%		V_eff = volume corresponding to max redshift at which galaxy would have been observed by survey
-%	compute color distributions (g-r, g-W1) in narrow TBD absolute magnitude bins (Mr, MW1)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{deluxetable*}{ r r r r r r }
+\tablecaption{Magnitude bins used to fit the dependence of our SHAM model parameters \sigmamag and \sigmalos (Eq.~\ref{eq:sigma_linear}) on $z$- and $W1$-band absolute magnitude.
+\label{tab:mag_bins}
+}
+\tablehead{
+\multicolumn{2}{c}{$0.4 < \zphot < 0.5$} & \multicolumn{2}{c}{$0.5 < \zphot < 0.6$} & \multicolumn{2}{c}{$0.6 < \zphot < 0.7$} \\
+\vspace{-2ex} \\
+\hline
+\vspace{-2ex} \\
+\colhead{Luminosity bin} & \colhead{$N_{\rm gal}$} & \colhead{Luminosity bin} & \colhead{$N_{\rm gal}$} & \colhead{Luminosity bin} & \colhead{$N_{\rm gal}$} \\
+\vspace{-2ex} \\
+\hline
+\vspace{-2ex} \\
+\multicolumn{6}{c}{$z$-band}
+}
+\startdata
+$-21.60 > {^{0.43}M_z} > -21.85$	&	2,458,920	&	$-21.60 > {^{0.52}M_z} > -21.85$	&	2,304,853	&	$-21.85 > {^{0.63}M_z} > -22.10$	&	2,040,336	\\
+$-21.85 > {^{0.43}M_z} > -22.10$	&	1,880,295	&	$-21.85 > {^{0.52}M_z} > -22.10$	&	1,732,820	&	$-22.10 > {^{0.63}M_z} > -22.35$	&	1,512,940	\\
+$-22.10 > {^{0.43}M_z} > -22.35$	&	1,317,269	&	$-22.10 > {^{0.52}M_z} > -22.35$	&	1,205,545	&	$-22.35 > {^{0.63}M_z} > -22.60$	&	1,039,573	\\
+$ {^{0.43}M_z} <-22.35$	&	1,919,594	&	$ {^{0.52}M_z} < -22.35$	&	1,855,014	&	$ {^{0.63}M_z} < -22.60$	&	1,401,662	\\
+\cutinhead{$W1$-band}
+$-22.25 > {^{0.43}M_{W1}} > -22.55$	&	2,324,816	&	$-22.85 > {^{0.52}M_{W1}} > -23.15$	&	1,771,554	&	$-23.15 > {^{0.63}M_{W1}} > -23.45$	&	1,634,860	\\
+$-22.55 > {^{0.43}M_{W1}} > -22.85$	&	1,837,859	&	$-23.15 > {^{0.52}M_{W1}} > -23.45$	&	1,245,107	&	$-23.45 > {^{0.63}M_{W1}} > -23.75$	&	1,273,814	\\
+$-22.85 > {^{0.43}M_{W1}} > -23.15$	&	1,277,192	&	$-23.45 > {^{0.52}M_{W1}} > -23.75$	&	754,154	&	$-23.75 > {^{0.63}M_{W1}} > -24.05$	&	798,012	\\
+$ {^{0.43}M_{W1}} <-23.15$	&	1,565,914	&	${^{0.52}M_{W1}} <-23.75$	&	693,491	&	$ {^{0.63}M_{W1}} < -24.05$	&	685,799	\\
+\enddata 
+\end{deluxetable*}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Simulations}\label{sec:sims}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-MDPL2 (refs)
-1 \Gpch periodic box
-DM particle resolution
-cosmology
-available snapshots
-Rockstar halo finder (refs)
+We use halo catalogs and merger histories obtained with the publicly available \texttt{ROCKSTAR} halo finder \citep{behroozi_etal13b} for the MultiDark Planck 2 (MDPL2) simulation \citep{klypin_etal16}. MDPL2 assumes Planck cosmology (ref) ($h=0.6777$, $\Omega_{\rm m}=0.307115$) and evolves $3840^3$ dark matter particles in a 1 \Gpch cubic volume, beginning at $z=120$; 126 snapshots are available between $z\sim15$ and $z=0$. MDPL2's dark matter particle resolution is $1.51\times10^9\ h^{-1}\ \msun$, and \texttt{ROCKSTAR} halo catalogs are mass-complete at $\mhalo\gtrsim11.4\times10^{11}\ h^{-1}\ \msun$.
 
+TODO: brief description of ROCKSTAR halo finder and products
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Subhalo abundance matching}\label{sec:sham}
+\section{Modeling techniques}\label{sec:model}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Subhalo abundance matching (SHAM; refs) places mock galaxies into halos by exploiting the correlation between some galaxy property\textemdash usually stellar mass or luminosity\textemdash and a halo property such as virial mass or circular velocity, \vcirc, (TODO: elaborate on vcirc options). Here we use SHAM to create a mock galaxy population with the same abundance and luminosity distribution of the target galaxy sample by assuming the following relation:
+Subhalo abundance matching (SHAM; refs) places mock galaxies into halos by exploiting the correlation between some galaxy property\textemdash usually stellar mass or luminosity\textemdash and a halo property such as virial mass or circular velocity, \vcirc.
+
+TODO: elaborate on vcirc options
+
+Here we use SHAM to create a mock galaxy population with the same abundance and luminosity distribution of the parent galaxy sample by assuming the following relation:
 %
 \begin{equation}\label{eq:sham}
 \neff(<M)=n_{\rm h}(>\vcirc),
@@ -148,15 +220,16 @@ Subhalo abundance matching (SHAM; refs) places mock galaxies into halos by explo
 %
 \noindent i.e., the (effective) number density of galaxies, \neff, of magnitude $M$ or brighter equals the number density of halos, $n_{\rm h}$, with circular velocity \vcirc or greater.
 
-TODO: also tested \vmax and \vmaxmpeak and found that \vmaxmpeak works as well as \vpeak, while using \vmax yields significantly worse results.
+TODO: also tested \vmax and \vmaxmpeak and found that \vmaxmpeak works as well as \vpeak, while using \vmax yields significantly worse results
 
-\subsection{Luminosity assignment}\label{subsec:luminosity_assign}
+
+\subsection{SHAM luminosity assignment}\label{subsec:luminosity_assign}
 
 To assign absolute magnitudes to halos in each redshift bin we implement the following procedure:
 %
 \begin{enumerate}[leftmargin=0pt, itemindent=24pt, listparindent=10pt, label=(\arabic*), nosep]
 \item \label{step:neff}
-Compute for each parent galaxy sample the effective galaxy number density as a function of absolute magnitude in band ${X=\{M_r, M_{W1}\}}$, $\neff(<M_X)$. Absolute magnitudes are computed with distance moduli from photometric redshifts, and $K$-corrections are calculated using the \idl package \kcorrect (ref) with DECam $grz$ and WISE $W1$ and $W2$ filter responses. We $K$-correct each target galaxy sample to the redshift of the relevant simulation snapshot, \zsim (TODO: see table?), e.g., galaxies in the ${0.4 < \zphot < 0.5}$ bin are $K$-corrected to $\zsim=0.42531$.
+Compute for each parent galaxy sample the effective galaxy number density as a function of absolute magnitude in band ${X \in \{z, W1\}}$, $\neff(<M_X)$. Absolute magnitudes are computed with distance moduli from photometric redshifts, and $K$-corrections are calculated using the \idl package \kcorrect (ref) with DECam $grz$ and WISE $W1$ and $W2$ filter responses. We $K$-correct each target galaxy sample to the redshift of the relevant simulation snapshot, \zsim (see Table~\ref{tab:parent_samples}).
 
 We compute $\neff(<M_X)$ for each parent galaxy sample using the method of inverse effective volumes (TODO: refs). For each galaxy in the sample we calculate an effective volume, $V_{\rm eff}$:
 %
@@ -173,47 +246,103 @@ The effective galaxy number density is the sum of the inverse of $V_{\rm eff}(M_
 \end{equation}
 %
 \item \label{step:nh}
-Assign absolute magnitudes to mock galaxies with no scatter in the luminosity\textendash \vpeak relation according to Equation~\ref{eq:sham}. For each halo we find the cumulative number density $n_{\rm h}(>\vpeak)$ corresponding to its value of \vpeak. We then assign to each halo a mock galaxy with the absolute magnitude $M_X$ at which the effective number density $\neff(<M_X)$ of the parent galaxy sample equals $n_{\rm h}(>\vpeak)$. (TODO: figure?)
+Assign absolute magnitudes to mock galaxies with no scatter in the luminosity\textendash \vpeak relation according to Equation~\ref{eq:sham}. For each halo we find the cumulative number density $n_{\rm h}(>\vpeak)$ corresponding to its value of \vpeak. We then assign to each halo a mock galaxy with the absolute magnitude $M_X$ at which the effective number density $\neff(<M_X)$ of the parent galaxy sample equals $n_{\rm h}(>\vpeak)$.
 %
 \item \label{step:sham_scatter}
-To incorporate magnitude-dependent scatter (\sigmamag) into the luminosity\textendash \vpeak relation we assign to each mock galaxy a new absolute magnitude, $M'_X$, where $M'_X$ is drawn from a Gaussian distribution centered at $M_X$ with width $\alpha\,M_X$, where $\alpha>0$, i.e., the width of the distribution is proportional to $M_X$. We then assign absolute magnitudes to mock galaxies as in step \ref{step:nh}, but according to $M'_X$ instead of $M_X$. This method preserves both the galaxy luminosity function and the original \vpeak distribution.
+To incorporate magnitude-dependent scatter into the luminosity\textendash \vpeak relation we assign to each mock galaxy a new absolute magnitude, $M'_X$, where $M'_X$ is drawn from a Gaussian distribution centered at $M_X$ with width $\sigmamag$, where $\sigmamag$ is proportional to the absolute value of $M_X$. We then assign absolute magnitudes to mock galaxies as in step \ref{step:nh}, but according to $M'_X$ instead of $M_X$. This method preserves both the galaxy luminosity function and the original \vpeak distribution.
 %
 \item \label{step:los_scatter}
-Scatter the positions of mock galaxies along one axis of the simulation volume (we choose the $x$-axis as this ``line-of-sight" axis to avoid confusion with redshift) to mimic the uncertainty in radial position of our target galaxy samples due to photometric redshift errors. For each mock galaxy we draw a ``scattered" $x$-axis coordinate $x'$ from a Gaussian distribution of width $\sigma_x$ centered at the galaxy's original $x$-axis position. Mock galaxies that scatter out of the simulation volume of $1~h^{-3}{\rm Gpc}^3$ are wrapped back in to preserve the periodic boundary conditions, e.g., a mock galaxy at $x=25~\Mpch$ that scatters to $x'=-50~\Mpch$ would be placed at $x=950~\Mpch$.
+Scatter the positions of mock galaxies along each of the three axes $x_i$ of the simulation volume to mimic the uncertainty in radial (line-of-sight) position of our target galaxy samples due to photometric redshift errors. For each mock galaxy we draw a ``scattered" coordinate $x'_i$ from a Gaussian distribution of width \sigmalos centered at the galaxy's original $x_i$ position. Mock galaxies that scatter out of the simulation volume of $1~h^{-3}\ {\rm Gpc}^3$ are wrapped back in to preserve the periodic boundary conditions, e.g., a mock galaxy at $x_i=25~\Mpch$ that scatters to $x'_i=-50~\Mpch$ is placed at $x_i=950~\Mpch$.
 %
 \item \label{step:model_wp}
-Compute the projected correlation function, \wprp, of each mock catalog (see \S\ref{subsec:wprp}), and the goodness-of-fit per degree of freedom, \chisqred (see \S\ref{subsec:error}), of the model fit to the projected correlation function of the relevant parent galaxy sample. We measure \chisqred of \wprp in bins of absolute magnitude ($M_r$ or $M_{W1}$; see Figure~\ref{TODO}).
+For each mock catalog, compute the projected correlation function, \wprp (see \S\ref{subsec:wprp}), averaged over the three axes of the simulation volume. We then compute the goodness-of-fit per degree of freedom, \chisqred (see \S\ref{subsec:error}), of the model fit to the mean \wprp of the relevant parent galaxy sample. We measure \chisqred for each mean \wprp in bins of absolute magnitude ($M_z$ or $M_{W1}$).
 %
 \item \label{step:model_refine}
-Repeat steps \ref{step:sham_scatter} through \ref{step:model_wp} for additional values of $\alpha$ and $\sigma_x$ as needed to minimize \chisqred in each magnitude bin. In practice we first sparsely sample a wide range of values of $\alpha$ and $\sigma_x$:
+Repeat steps \ref{step:sham_scatter} through \ref{step:model_wp} for additional values of \sigmamag and \sigmalos as needed to minimize \chisqred in each magnitude bin. In practice we first coarsely sample a wide range of values of \sigmamag and \sigmalos:
 %
 \begin{subequations}
   \begin{align}
-    (0.1 \leq \alpha \leq 0.9),\ &\Delta\alpha=0.1 \\
-    (10 \leq \sigma_x \leq 100\, \Mpch),\ &\Delta\sigma_x=10\, \Mpch
+    0 \leq \frac{\sigmamag}{|M_X|} \leq 1.0,\ & \Delta \!\! \left[\frac{\sigmamag}{|M_X|}\right]=0.1 \\
+    0 \leq \sigmalos \leq 150~\Mpch,\ & \Delta \sigmalos=10~\Mpch.
   \end{align}
 \end{subequations}
 %
-\noindent We then more densely sample narrower ranges of both parameters around the initial coarse-grained values that minimize \chisqred.
+\noindent We then more densely sample (using $\Delta(\sigmamag/|M_X|)=0.01$ and ${\Delta \sigmalos=2~\Mpch}$) narrower ranges of both parameters around the initial coarse-grained values that minimize \chisqred.
 %
 \item \label{step:sigma_linear}
-Finally, we parameterize the dependence of \sigmamag and \sigmalos on absolute magnitude as follows:
+Finally, we parameterize the dependence of \sigmamag and \sigmalos on absolute magnitude, $M_X$, as follows:
 %
 \begin{subequations}\label{eq:sigma_linear}
 \begin{align}
-  \sigmamag(M_X) &= a\, M_X + \sigma_{{\rm mag},0} \\
-  \sigmalos(M_X) &= b\, M_X + \sigma_{{\rm los},0}.
+  \sigmamag(M_X) &= s_{\rm mag}\, |M_X| + \sigma_{{\rm mag},0} \\
+  \sigmalos(M_X) &= s_{\rm los}\, |M_X| + \sigma_{{\rm los},0}.
 \end{align}
 \end{subequations}
 %
-\noindent The values of $(a,\, \sigma_{{\rm mag},0})$ and $(b,\, \sigma_{{\rm los},0})$ are determined by linear fits to $\sigmamag^i$ versus $M^i_X$, and $\sigmalos^i$ versus $M^i_X$, respectively, where $\sigmamag^i$ and $\sigmalos^i$ are the values that minimize \chisqred of \wprp in the $i$th magnitude bin, $M^i_X$. Figure~\ref{TODO} shows the $r$-band and $W1$-band magnitude bins used for each redshift bin.
+\noindent The best-fit values of $s_{\rm mag}$, $\sigma_{{\rm mag},0}$, $s_{\rm los}$, and $\sigma_{{\rm los},0}$ are given in Table~\ref{tab:scatter_params}. These values are determined by linear fits to $\sigmamag^i$ versus $M^i_X$, and $\sigmalos^i$ versus $M^i_X$, respectively, where $\sigmamag^i$ and $\sigmalos^i$ are the values that minimize \chisqred of \wprp in the $i$th magnitude bin, $M^i_X$. Figure~\ref{fig:zphot_mag-bins} shows the $z$-band and $W1$-band magnitude bins used for each photometric redshift bin.
 \end{enumerate}
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{../figures/abs_mag_bins_vs_zphot_z0p4-0p7.png}
+\caption{$K$-corrected $z$- and $W1$-band absolute magnitudes verses photometric redshift for DECaLS DR9 galaxies. The boxes in each panel show the magnitude bins used to fit the dependence of the SHAM parameters \sigmamag and \sigmalos (Eq.~\ref{eq:sigma_linear}) on absolute magnitude. Four magnitude bins are used for each photometric redshift bin, with the brightest bin defined by only a lower bound. Galaxies in each redshift bin are $K$-corrected to the redshift of the relevant simulation snapshot (\S\ref{subsec:TODO}). The sharp cut in $M_z$ results from the $z > 20.7$ apparent magnitude cut and the fact that magnitudes are $K$-corrected to a redshift very close to each galaxy's \zphot. Additional details are given in Tables~\ref{tab:parent_samples} and \ref{tab:mag_bins}.
+}
+\label{fig:zphot_mag-bins}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Mz
+0.4 < z < 0.5
+
+
+0.5 < z < 0.6
+
+
+0.6 < z < 0.7
+0.127, 3.226
+17.88, 516.86
+
+MW1
+0.4 < z < 0.5
+
+
+0.5 < z < 0.6
+
+
+0.6 < z < 0.7
+
+
+
+\begin{deluxetable}{ r r r r r }[h]
+\tablecaption{Best-fit values for the linear dependence of our SHAM model parameters \sigmamag and \sigmalos (Eq.~\ref{eq:sigma_linear}) on absolute magnitude.
+\label{tab:scatter_params}
+}
+\tablehead{
+\colhead{} & \colhead{$s_{\rm mag}$} & \colhead{$\sigma_{{\rm mag},0}$} & \colhead{$s_{\rm los}$} & \colhead{$\sigma_{{\rm los},0}$} \\
+\vspace{-2ex} \\
+\hline
+\vspace{-2ex} \\
+\multicolumn{5}{c}{$0.4 < \zphot < 0.5$}
+}
+\startdata
+$z$-band & x & x & x & x \\
+$W1$-band & x & x & x & x \\
+\cutinhead{$0.5 < \zphot < 0.6$}
+$z$-band & x & x & x & x \\
+$W1$-band & x & x & x & x \\
+\cutinhead{$0.6 < \zphot < 0.7$}
+$z$-band & x & x & x & x \\
+$W1$-band & x & x & x & x \\
+\enddata
+\end{deluxetable}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Projected correlation functions}\label{subsec:wprp}
 
 The luminosity assignment stage of our modeling procedure involves just two free parameters, $\alpha$ and \sigmalos, which account for scatter in the luminosity\textendash\vcirc relation and photometric redshift errors of our target galaxy samples, respectively. We constrain these parameters by fitting the projected correlation functions of mock galaxy catalogs created from our model to those of the corresponding parent galaxy samples.
 
-One goal of this paper is to exploit the completeness and enormous volume of DECaLS data, which comes at the expense of the precision clustering measurements achievable with spectroscopic redshifts. Zhou+ 2020 has demonstrated the constraining power of the projected correlation function, \wprp, of DECaLS galaxies computed with line-of-sight distances derived from photometric redshifts (they use this statistic to constrain the halo occupation distribution (HOD, TODO: defined earlier?) parameters of LRGs selected from DECaLS DR7). The projected correlation function integrates the 3D correlation function, \xir, along the line-of-sight, effectively eliminating the effects of radial distance uncertainty due to photometric redshift errors:
+One goal of this paper is to exploit the completeness and enormous volume of DECaLS data, which comes at the expense of the precision clustering measurements achievable with spectroscopic redshifts. \citet{zhou_etal20b} has demonstrated the constraining power of the projected correlation function, \wprp, of DECaLS galaxies computed with line-of-sight distances derived from photometric redshifts (they use this statistic to constrain the halo occupation distribution (HOD, TODO: defined earlier?) parameters of ``DESI-like" LRGs selected from DECaLS DR7). The projected correlation function integrates the 3D correlation function, \xir, along the line-of-sight, effectively eliminating the effects of radial distance uncertainty due to photometric redshift errors:
 %
 \begin{equation}
 \wprp \equiv \int_{-\pimax}^{\pimax}\!\xi(\rp,\pi)\,d\pi \approx 2\!\int_0^{\pimax}\!\xi(\rp,\pi)\,d\pi,
@@ -221,16 +350,16 @@ One goal of this paper is to exploit the completeness and enormous volume of DEC
 %
 \noindent where \rp is the projection of $r$ into the plane perpendicular to the line-of-sight distance, $\pi$.
 
-We use the \corrfunc package (ref) to calculate \wprp for both our target galaxy samples and mock catalogs in 19 logarithmic bins between ${\rp>0.04\Mpch}$ and ${\rp<52.8\Mpch}$.
+We use the \corrfunc package (ref) to calculate \wprp for both our target galaxy samples and mock catalogs in 19 logarithmic bins between ${\rp>0.033\ \Mpch}$ and ${\rp<64.4\ \Mpch}$.
 
-As our data samples are confined to narrow redshift ranges of width ${\Delta z = 0.1}$, photometric redshift errors will cause some galaxies that belong to a given redshift bin to scatter into an adjacent bin and be excluded from the calculation of \wprp for their true bin. To account for this we adopt the method used by Zhou+ 2020 (see their Figure 8): instead of the autocorrelation function of galaxies within each redshift bin, we use the Landy-Szalay (ref) estimator for the cross-correlation of two samples, $D_1$ and $D_2$:
+As our data samples are confined to narrow redshift ranges of width ${\Delta z_{\rm phot} = 0.1}$, photometric redshift errors will cause some galaxies that belong to a given redshift bin to scatter into an adjacent bin and be excluded from the calculation of \wprp for their true bin. To account for this we adopt the method used by \citet{zhou_etal20b} (see their Figure 8):\ instead of the autocorrelation function of galaxies within each redshift bin, we use the Landy-Szalay (ref) estimator for the cross-correlation of two samples, $D_1$ and $D_2$:
 %
 \begin{equation}\label{eq:landy-szalay}
 \wprp = 2\pimax\!\left(\frac{D_1D_2 - D_1R_2 - D_2R_1}{R_1R_2} + 1 \right).
 \end{equation}
 %
-\noindent Each term of Equation~\ref{eq:landy-szalay} denotes pair counts between two samples, where $D$ and $R$ respectively indicate samples of data (galaxies) and random points with the same angular and redshift distributions as the corresponding data sample. Here $D_1$ is all galaxies within a given redshift bin: ${\zmin < \zphot < \zmax}$, where \zmin and \zmax are the limits of the bin, while $D_2$ is all galaxies within a wider redshift range defined by ${(\zmin-\pimax) < \zphot < (\zmax+\pimax)}$, where ${\pimax=150~\Mpch}$.
-We verify our implementation of this method with \corrfunc by reproducing the projected correlation functions of DECaLS LRGs that Zhou+ 2020 obtain (see their Figure 9) using different clustering code.
+\noindent Each term of Equation~\ref{eq:landy-szalay} denotes pair counts between two samples, where $D$ and $R$ respectively indicate samples of data (i.e.\ galaxies) and random points with the same angular and redshift distributions as the corresponding data sample. Here $D_1$ is all galaxies within a given redshift bin: ${\zmin < \zphot < \zmax}$, where \zmin and \zmax are the limits of the bin, while $D_2$ is all galaxies within a wider redshift range defined by ${(\zmin-\pimax) < \zphot < (\zmax+\pimax)}$, where ${\pimax=150~\Mpch}$.
+We verify our implementation of this method with \corrfunc by reproducing the projected correlation functions of DECaLS LRGs that \citet{zhou_etal20b} obtain (see their Figure 9) using different clustering code.
 
 DECaLS data includes catalogs of random points with the same angular sky coverage and mask information as the survey footprint, which we use to construct our random samples. We use 20 times as many random as data points for each galaxy sample, and draw redshifts for random points from the redshift distribution of the corresponding data sample.
 
@@ -239,8 +368,8 @@ To measure \wprp of our mock catalogs we take advantage of the \corrfunc \texttt
 
 \subsection{Jackknife error estimation and goodness-of-fit}\label{subsec:error}
 
-To estimate the uncertainty of the \wprp measurements of our target galaxy samples we use HEALPix (TODO: healpy?) to divide the angular sky coverage of each sample into $N_{\rm jk}$ regions of roughly equal area, suitable for jackknife resampling. We then measure \wprp in each of these $N_{\rm jk}$ regions, and compute the covariance matrix as follows:
-%
+To estimate the uncertainty of the \wprp measurements of our target galaxy samples we use \texttt{healpy} (ref) with $N_{\rm side}=6$ to divide the angular sky coverage of each sample into $N_{\rm jk}$ regions of roughly equal area, suitable for jackknife resampling. We then measure \wprp in each of these $N_{\rm jk}$ regions, and compute the covariance matrix as follows:
+%\
 \begin{equation}\label{eq:cov}
 {\rm Cov}_{ij} = \frac{N_{\rm jk}-1}{N_{\rm jk}}
 \sum^{N_{\rm jk}}_{\ell=1}\left(\omega^\ell_i-\overline{\omega}_i\right) \left(\omega^\ell_j-\overline{\omega}_j\right),
@@ -256,12 +385,12 @@ With the covariance matrix in hand we quantify how successful any instance of ou
 \!\left({\rm Cov}^{-1}\right)_{ij}\!\left(\omega_j-\omega^{\rm mod}_j\right)\!,
 \end{equation}
 %
-\noindent where $N_{\rp}$ is the number of \rp bins, $\nu$ is the number of degrees of freedom minus the number of model parameters (here ${N_{\rp}-2=17}$), $\omega_i$ and $\omega_j$ are the data \wprp values in the $i$th and $j$th \rp bins, respectively, and $\omega^{\rm mod}_i$ and $\omega^{\rm mod}_j$ are the \wprp values of the relevant mock catalog in the $i$th and $j$th \rp bins, respectively.
+\noindent where $N_{\rp}$ is the number of \rp bins used for fitting (we use $\rp>0.1~\Mpch$), $\nu$ is equal to $N_{\rp}$ minus the number of free model parameters, $\omega_i$ and $\omega_j$ are the data \wprp values in the $i$th and $j$th \rp bins, respectively, and $\omega^{\rm mod}_i$ and $\omega^{\rm mod}_j$ are the \wprp values of the relevant mock catalog in the $i$th and $j$th \rp bins, respectively.
 
 
-\subsection{Rest-frame color assignment}\label{subsec:color_assign}
+\subsection{Galaxy color assignment}\label{subsec:color_assign}
 
-Color matching assumes a correlation between rest-frame galaxy color at fixed absolute magnitude and some proxy for the age of the halo in which each mock galaxy resides, with redder colors generally assigned to older halos. The first step of color assignment is to determine the best proxy for halo age. Previous implementations of this technique at $z\sim0$ using SDSS data have used TODO (refs).
+Age (distribution?) matching assumes a correlation between rest-frame galaxy color at fixed absolute magnitude and some proxy for the age of the halo in which each mock galaxy resides, with redder colors (i.e., older, quenched galaxies) generally assigned to older halos. Implementations of this technique at $z\sim0$ using spectroscopic galaxy redshifts from SDSS have used halo starvation redshift, \zstarve, for the halo age proxy \citep{hearin_watson13, hearin_etal14, safonova_etal21}. In general, \zstarve represents the redshift at which a galaxy loses its supply of cold gas, which leads to the quenching of star formation and the reddening of the galaxy. Multiple physical processes relevant to a halo's assembly history can affect the value of \zstarve for a given halo, which \citet{hearin_watson13} incorporate into this definition:
 %
 \begin{equation}\label{eq:zstarve}
 \zstarve \equiv \max\{\zchar,\, \zacc,\, \zform\}.
@@ -276,7 +405,7 @@ Color matching assumes a correlation between rest-frame galaxy color at fixed ab
 %
 \item \zform is the ``formation" redshift at which a halo transitions from the fast to slow accretion regime.
 \end{itemize}
-\noindent We use same definition of \zform as Hearin \& Watson 2013, motivated by Wechsler+ 2002:
+\noindent We use same definition of \zform as \citet{hearin_watson13}, motivated by \citet{wechsler_etal02}:
 %
 \begin{equation}\label{eq:zform}
 \zform \equiv \frac{c_{\rm vir}}{4.1 a_0} - 1,
@@ -292,56 +421,120 @@ Color matching assumes a correlation between rest-frame galaxy color at fixed ab
 %\end{cases}.
 \end{equation}
 %
-\noindent where ${c_{\rm vir} = R_{\rm vir}/R_{\rm s}}$ is a halo's concentration at the time of observation, indicated by $a_0$. For host halos $a_0$ is the scale factor of the relevant simulation snapshot, while for subhalos $a_0$ is the scale factor at the time of accretion: ${\zacc = 1/{a_0} - 1}$. $R_{\rm vir}$ is the virial radius of a halo, and $R_{\rm s}$ is the NFW scale radius.
+\noindent where ${c_{\rm vir} = R_{\rm vir}/R_{\rm s}}$ is a halo's concentration at the time of observation, indicated by $a_0$. For host halos $a_0$ is the scale factor of the relevant simulation snapshot, while for subhalos $a_0$ is the scale factor at the time of accretion: ${\zacc = 1/{a_0} - 1}$. $R_{\rm vir}$ is the virial radius of a halo, and $R_{\rm s}$ is the NFW scale radius (ref). \citet{hearin_watson13} use ${\mchar=10^{12}\ \hmsun}$, and note that their results are insensitive to the precise value of \mchar they use. We adopt their value for this work.
 
-Hearin \& Watson 2013 use ${\mchar=10^{12}~\hmsun}$ TODO...
+We compute \zstarve for all halos in our model from the \texttt{ROCKSTAR} halo merger trees available for MDPL2. Figure~\ref{fig:zstarve}
 
-%\begin{equation}\label{eq:}
-%\end{equation}
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{../figures/halo_history_zstarve_example_zsnap0p42531.png}
+\caption{Mass accretion histories and \zstarve of four randomly selected halos from the $\zsim=0.425(31)$ snapshot of the MDPL2 simulation. The most massive halo (gold dash-dotted line) has the earliest starvation redshift ($\zstarve=4.75$), corresponding to when its mass reaches the characteristic value ${\mchar=10^{12}\ \hmsun}$. The other three halos also reach \mchar (at later redshifts), but in accordance with Eq.~\ref{eq:zstarve} the redshifts at which this occurs are not necessarily the same as their \zstarve values, e.g., the least massive halo (purple solid line) has $\zstarve=3.09$ even though its mass doesn't exceed \mchar until $z\lesssim1.5$.
+}
+\label{fig:zstarve_example}
+\end{figure}
 
 
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{../figures/model_color_CDF_z0p40-0p50_Mzlimn21p6_zstarve.png}
+\caption{Illustration of the model color assignment procedure (step~\ref{subsec:color_assign}), which equates halo \zstarve with galaxy color at fixed luminosity. The solid gray curve is the cumulative distribution of $^{0.43}(r-z)$ color for galaxies in the $-22.5 < {^{0.43}M_z} < -22.55$ luminosity bin, while the dotted purple curve is the cumulative distribution of halo \zstarve for mock galaxies in the same luminosity bin. The magenta arrows indicate that a mock galaxy in this luminosity bin in a halo with $\zstarve=2.8$ is assigned a $^{0.43}(r-z)$ color of $0.92$. The faint gray and purple curves are the galaxy color and halo \zstarve distributions for additional luminosity bins. An equivalent procedure is used to assign $r-W1$ model colors at fixed $M_{W1}$ and in other redshift bins.
+}
+\label{fig:color_assign}
+\end{figure}
 
-%Free model parameters (C=continuous, D=discrete):
-%	(D) (sub)halo property for SHAM: \vpeak, \vmax, \vmaxmpeak
-%	(D) (sub)halo property for age-matching (color assignment): \zstarve, \zform, \zacc, \zchar
-%	(C) amplitude and (D) functional form Vpeak--luminosity correlation
-%	(C) amplitude and (D) functional form of photo-z errors in model (constrained by data correlation function)
-%
-%For each relevant simulation snapshot and corresponding photo-z bin:
-%	For each TBD (sub)halo property for SHAM:
-%		For each relevant data sample \neff (north/south and optical/IR parent sample):
-%			For each TBD implementation of SHAM scatter:
-%				select (sub)halo catalog and assign luminosities
-%				If chosen photo-z implementation is TBD:
-%					For each TBD photo-z error implementation option:
-%						compute full sample clustering and compare to data (no luminosity bins)
-%				Else:	
-%					compute full sample clustering with chosen photo-z error implementation and compare to data
-%
-%				compute luminosity-binned clustering (with chosen photo-z error implementation) and compare to data
-%				assign relevant color(s) to selected (sub)halo catalog in narrow (TBD) luminosity bins
-%				compare model CMD to data
-%				TBD: compute color-binned clustering (with chosen photo-z error implementation) and compare to data
 
-%DATA CLUSTERING STRUCTURE:
-%	BASEDIR /
-%	clustering /
-%	z-band apparent mag cut /	
-%	r OR W1 absolute mag cut / 
-%	full sample OR absolute mag bins / 
-%	wp /
-%	wp by field (north, south), photo-z bin, sample type (GxG, LxL, LxnL), pimax (<=150 Mpc/h)
+\subsection{Mock LRG selection}\label{subsec:mock_lrg}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{}\label{}
+\section{Results}\label{sec:results}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{figure}
+\centering
+%DATA \hfill MODEL \\
+\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_z0p40-0p50_IR-lrg.png}
+% \includegraphics[width=0.48\linewidth]{../figures/model.png} \\
+\\
+\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_z0p50-0p60_IR-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
+\\
+\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_z0p60-0p70_IR-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
+\caption{TODO
+}
+\label{fig:}
+\end{figure}
+
+
+\begin{figure}
+\centering
+%DATA \hfill MODEL \\
+\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_z0p40-0p50_optical-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
+\\
+\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_z0p50-0p60_optical-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
+\\
+\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_z0p60-0p70_optical-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
+\caption{TODO
+}
+\label{fig:}
+\end{figure}
+
+
+\begin{figure}
+\centering
+%DATA \hfill MODEL \\
+\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_z0p40-0p50_IR-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
+\\
+\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_z0p50-0p60_IR-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
+\\
+\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_z0p60-0p70_IR-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
+\caption{TODO
+}
+\label{fig:}
+\end{figure}
+
+
+\begin{figure}
+\centering
+%DATA \hfill MODEL \\
+\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_z0p40-0p50_optical-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
+\\
+\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_z0p50-0p60_optical-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
+\\
+\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_z0p60-0p70_optical-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
+\caption{TODO
+}
+\label{fig:}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{}\label{}
+\section{Model predictions and discussion}\label{sec:predictions}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+SHAM with IR is new!
+
+Relative comparisons (IR vs optical) removes dependence on specific cosmology
+
+Incomplete central halo occupation by DESI LRGs at highest halo masses due to selection cuts
+
+Fit analytic HOD to my empirical
+
+Compare to Rongpu's DESI-like LRG HOD fits?
+
+
+%Future work:
+%ideas from JDR paper
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -351,7 +544,21 @@ Hearin \& Watson 2013 use ${\mchar=10^{12}~\hmsun}$ TODO...
 
 \acknowledgements
 
-%Legacy Surveys DR9
+TODO: DOE funding, DESI acknowledgment?
+
+The Legacy Surveys consist of three individual and complementary projects:\ the Dark Energy Camera Legacy Survey (DECaLS; Proposal ID \# 2014B-0404; PIs:\ David Schlegel and Arjun Dey), the Beijing-Arizona Sky Survey (BASS; NOAO Prop.\ ID \#2015A-0801; PIs:\ Zhou Xu and Xiaohui Fan), and the Mayall $z$-band Legacy Survey (MzLS; Prop.\ ID \#2016A-0453; PI:\ Arjun Dey). DECaLS, BASS and MzLS together include data obtained, respectively, at the Blanco telescope, Cerro Tololo Inter-American Observatory, NSF?s NOIRLab; the Bok telescope, Steward Observatory, University of Arizona; and the Mayall telescope, Kitt Peak National Observatory, NOIRLab. The Legacy Surveys project is honored to be permitted to conduct astronomical research on Iolkam Du'ag (Kitt Peak), a mountain with particular significance to the Tohono O'odham Nation.
+
+NOIRLab is operated by the Association of Universities for Research in Astronomy (AURA) under a cooperative agreement with the National Science Foundation.
+
+This project used data obtained with the Dark Energy Camera (DECam), which was constructed by the Dark Energy Survey (DES) collaboration. Funding for the DES Projects has been provided by the U.S. Department of Energy, the U.S. National Science Foundation, the Ministry of Science and Education of Spain, the Science and Technology Facilities Council of the United Kingdom, the Higher Education Funding Council for England, the National Center for Supercomputing Applications at the University of Illinois at Urbana-Champaign, the Kavli Institute of Cosmological Physics at the University of Chicago, Center for Cosmology and Astro-Particle Physics at the Ohio State University, the Mitchell Institute for Fundamental Physics and Astronomy at Texas A\&M University, Financiadora de Estudos e Projetos, Fundacao Carlos Chagas Filho de Amparo, Financiadora de Estudos e Projetos, Fundacao Carlos Chagas Filho de Amparo a Pesquisa do Estado do Rio de Janeiro, Conselho Nacional de Desenvolvimento Cientifico e Tecnologico and the Ministerio da Ciencia, Tecnologia e Inovacao, the Deutsche Forschungsgemeinschaft and the Collaborating Institutions in the Dark Energy Survey. The Collaborating Institutions are Argonne National Laboratory, the University of California at Santa Cruz, the University of Cambridge, Centro de Investigaciones Energeticas, Medioambientales y Tecnologicas-Madrid, the University of Chicago, University College London, the DES-Brazil Consortium, the University of Edinburgh, the Eidgenossische Technische Hochschule (ETH) Zurich, Fermi National Accelerator Laboratory, the University of Illinois at Urbana-Champaign, the Institut de Ciencies de l'Espai (IEEC/CSIC), the Institut de Fisica d?Altes Energies, Lawrence Berkeley National Laboratory, the Ludwig Maximilians Universitat Munchen and the associated Excellence Cluster Universe, the University of Michigan, NSF?s NOIRLab, the University of Nottingham, the Ohio State University, the University of Pennsylvania, the University of Portsmouth, SLAC National Accelerator Laboratory, Stanford University, the University of Sussex, and Texas A\&M University.
+
+BASS is a key project of the Telescope Access Program (TAP), which has been funded by the National Astronomical Observatories of China, the Chinese Academy of Sciences (the Strategic Priority Research Program ``The Emergence of Cosmological Structures'' Grant \# XDB09000000), and the Special Fund for Astronomy from the Ministry of Finance. The BASS is also supported by the External Cooperation Program of Chinese Academy of Sciences (Grant \# 114A11KYSB20160057), and Chinese National Natural Science Foundation (Grant \# 11433005).
+
+The Legacy Survey team makes use of data products from the Near-Earth Object Wide-field Infrared Survey Explorer (NEOWISE), which is a project of the Jet Propulsion Laboratory/California Institute of Technology. NEOWISE is funded by the National Aeronautics and Space Administration.
+
+The Legacy Surveys imaging of the DESI footprint is supported by the Director, Office of Science, Office of High Energy Physics of the U.S. Department of Energy under Contract No. DE-AC02-05CH1123, by the National Energy Research Scientific Computing Center, a DOE Office of Science User Facility under the same contract; and by the U.S. National Science Foundation, Division of Astronomical Sciences under Contract No. AST-0950945 to NOAO.
+
+The Photometric Redshifts for the Legacy Surveys (PRLS) catalog used in this paper was produced thanks to funding from the U.S. Department of Energy Office of Science, Office of High Energy Physics via grant DE-SC0007914.
 
 %Work done at Argonne National Laboratory was supported by the U.S. Department of Energy, Office of Science, Office of Nuclear Physics, under contract DE-AC02-06CH11357. We gratefully acknowledge use of the Bebop cluster in the Laboratory Computing Resource Center at Argonne National Laboratory. Computational work for this paper was also performed on the Phoenix cluster at Argonne National Laboratory, jointly maintained by the Cosmological Physics and Advanced Computing (CPAC) group and by the Computing, Environment, and Life Sciences (CELS) directorate.
 %PB was partially funded by a Packard Fellowship, Grant \#2019-69646.
@@ -359,10 +566,10 @@ Hearin \& Watson 2013 use ${\mchar=10^{12}~\hmsun}$ TODO...
 %Funding for SDSS-III has been provided by the Alfred P.\ Sloan Foundation, the Participating Institutions, the National Science Foundation, and the U.S.\ Department of Energy Office of Science. The SDSS-III website is http://www.sdss3.org/.
 %SDSS-III is managed by the Astrophysical Research Consortium for the Participating Institutions of the SDSS-III Collaboration including the University of Arizona, the Brazilian Participation Group, Brookhaven National Laboratory, Carnegie Mellon University, University of Florida, the French Participation Group, the German Participation Group, Harvard University, the Instituto de Astrofisica de Canarias, the Michigan State/Notre Dame/JINA Participation Group, Johns Hopkins University, Lawrence Berkeley National Laboratory, Max Planck Institute for Astrophysics, Max Planck Institute for Extraterrestrial Physics, New Mexico State University, New York University, Ohio State University, Pennsylvania State University, University of Portsmouth, Princeton University, the Spanish Participation Group, University of Tokyo, University of Utah, Vanderbilt University, University of Virginia, University of Washington, and Yale University.
 
-The CosmoSim database used in this paper is a service by the Leibniz-Institute for Astrophysics Potsdam (AIP). The MultiDark database was developed in cooperation with the Spanish MultiDark Consolider Project CSD2009-00064.
+%The CosmoSim database used in this paper is a service by the Leibniz-Institute for Astrophysics Potsdam (AIP). The MultiDark database was developed in cooperation with the Spanish MultiDark Consolider Project CSD2009-00064.
 The authors gratefully acknowledge the Gauss Centre for Supercomputing e.V.\ (www.gauss-centre.eu) and the Partnership for Advanced Supercomputing in Europe (PRACE, www.prace-ri.eu) for funding the MultiDark simulation project by providing computing time on the GCS Supercomputer SuperMUC at Leibniz Supercomputing Centre (LRZ, www.lrz.de).
 %The Bolshoi simulations have been performed within the Bolshoi project of the University of California High-Performance AstroComputing Center (UC-HiPACC) and were run at the NASA Ames Research Center.
 
-\bibliography{refs}
+\bibliography{/Users/aberti/Desktop/research/tex/refs}
 
 \end{document}

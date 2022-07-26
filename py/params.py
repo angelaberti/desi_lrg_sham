@@ -20,6 +20,7 @@ MOCKDIRS = ["/uufs/chpc.utah.edu/common/home/astro/dawson/aberti/mocks",
             "/Users/aberti/Desktop/research/desi_lrg_sham/mocks",
            ]
 
+
 b = BASEDIRS[0]
 i = 1
 while not os.path.exists(b):
