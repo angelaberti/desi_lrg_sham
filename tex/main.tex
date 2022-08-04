@@ -74,16 +74,20 @@ IR LRG selection \citep{zhou_etal20b}:
 Optical LRG selection \citep{zhou_etal20a}:
 \begin{subequations}\label{eq:lrg_opt}
   \begin{align}
+   % stellar rejection cut
    & z - W1 > 0.8\times(r - z) - 0.6, \\
    \begin{split}
+   % eliminate low-redshift or bluer objects
    & \{ (g - W1 > 2.6)\ {\rm AND}\ (g - r > 1.4) \}\ {\rm OR} \\
    & \phantom{00} (r - W1 > 1.8),
    \end{split} \\
    \begin{split}
+   % color-dependent magnitude limit selects only most luminous objects at given redshift
    & ( r - z > 0.45\times(z - 16.83) )\ {\rm AND} \\
    & \phantom{00} (r - z > 0.19\times(z - 13.80) ),
    \end{split} \\
-   & r - z > 0.7, \\   
+   & r - z > 0.7, \\
+   % ensure targets yield secure spec-z measurements
    & z_{\rm fiber} < 21.5.
    \end{align}
 \end{subequations}
@@ -120,11 +124,11 @@ TODO: brief explanation of purpose of various cuts (why ``optical" and ``IR"?)
 \end{deluxetable}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-A primary goals of this work is to create mock galaxy catalogs that are both statistically complete and represent a superset of the color--magnitude space occupied by DESI LRG targets. Selection of DESI LRG targets is based entirely on $g$, $r$, $z$, and $W1$ apparent magnitudes (see \S\ref{subsec:lrg_select}), so we would ideally like to create mock catalogs where every mock galaxy has an apparent magnitude in each of these bands. SHAM, however, exploits the correlation between some physical halo property (e.g.\ circular velocity) and a physical galaxy property independent of redshift (e.g.\ luminosity). We therefore want to train our mock catalogs on galaxy samples that are complete to an \emph{absolute} magnitude threshold that includes all DESI LRGs (in the relevant redshift bin; see below).
+A primary goals of this work is to create mock galaxy catalogs that are both statistically complete and represent a superset of the color--magnitude space occupied by DESI LRG targets. Selection of DESI LRG targets is based entirely on $g$, $r$, $z$, and $W1$ apparent magnitudes (see \S\ref{subsec:lrg_select}), so we would ideally like to create mock catalogs where every mock galaxy has an apparent magnitude in each of these bands. SHAM, however, exploits the correlation between some physical halo property (e.g., circular velocity) and a physical galaxy property independent of redshift (e.g., luminosity). We therefore want to train our mock catalogs on galaxy samples that are complete to an \emph{absolute} magnitude threshold that includes all DESI LRGs (in the relevant redshift bin; see below).
 
 To select suitable parent galaxy samples we first apply an apparent $z$-band magnitude cut of $z < 20.7$, and remove stars by excluding catalog sources with ${\rm TYPE} = \texttt{PSF}$. We also apply the masks described in Table~\ref{tab:masks}, which are provided with DECaLS DR9, to remove sources affected by bad pixels or contamination from bright stars. Finally, a geometric mask is applied to ensure complete angular coverage by the catalogs of random points provided with DR9 (see \S\ref{subsec:wprp}). The resulting sample contains (at least) $\mathcal{O}(10^9)$ galaxies, sufficient to divide it into redshift bins and maintain low statistical error. We initially tested six redshift bins of width $\Delta\zphot=0.1$ between $\zphot=0.4$ and $\zphot=1.0$, but found that DECaLS DR9 photometry is only deep enough to apply our model up to $\zphot \sim 0.7$. At $\zphot \gtrsim 0.7$ the data are incomplete above the absolute magnitude threshold that encompasses DESI LRGs. We therefore limit our study to three redshift bins of $\Delta\zphot=0.1$ within $0.4 < \zphot < 0.7$.
 
-For each redshift bin we compute $z$- and $W1$-band magnitudes using \citet{zhou_etal20b} photometric redshifts to obtain distance moduli. We then $K$-correct absolute magnitudes (see step~\ref{step:neff} of \S\ref{subsec:luminosity_assign}) to the redshift of the relevant simulation snapshot, \zsim (see \S\ref{sec:sims}). For each redshift bin we use the snapshot closest to the median \zphot of the data, e.g.\ galaxies in the ${0.4 < \zphot < 0.5}$ bin are $K$-corrected to $\zsim=0.42531$.
+For each redshift bin we compute $z$- and $W1$-band magnitudes using \citet{zhou_etal20b} photometric redshifts to obtain distance moduli. We then $K$-correct absolute magnitudes (see step~\ref{step:neff} of \S\ref{subsec:luminosity_assign}) to the redshift of the relevant simulation snapshot, \zsim (see \S\ref{sec:sims}). For each redshift bin we use the snapshot closest to the median \zphot of the data, e.g., galaxies in the ${0.4 < \zphot < 0.5}$ bin are $K$-corrected to $\zsim=0.42531$.
 
 The final step in selecting parent galaxy samples is to identify $z$- and $W1$-band absolute magnitude cuts in each redshift bin that yield complete samples which also include the full absolute magnitude range of DESI LRG targets in that bin. Figure~\ref{fig:abs_mag_cuts} shows histograms of $K$-corrected absolute magnitudes for all $z<20.7$ DECaLS DR9 galaxies in each redshift bin. For each magnitude and redshift bin combination we identify an absolute magnitude cut (dashed black lines in Figure~\ref{fig:abs_mag_cuts}) that eliminates fainter galaxies where DECaLS DR9 becomes incomplete, while preserving $\gtrsim99\%$ of DESI LRG targets (solid orange and hatched purple histograms).
 Table~\ref{tab:parent_samples} lists the details of each parent galaxy sample, including the relevant absolute magnitude cut, sample size, effective number density, and the included fractions of IR- and optically-selected DESI LRG targets. Besides enforcing statistically complete parent samples, these magnitude cuts also eliminate galaxies with larger photometric redshift errors, increasing the accuracy of clustering measurements (see \S\ref{sec:wprp}).
@@ -246,7 +250,7 @@ The effective galaxy number density is the sum of the inverse of $V_{\rm eff}(M_
 \end{equation}
 %
 \item \label{step:nh}
-Assign absolute magnitudes to mock galaxies with no scatter in the luminosity\textendash \vpeak relation according to Equation~\ref{eq:sham}. For each halo we find the cumulative number density $n_{\rm h}(>\vpeak)$ corresponding to its value of \vpeak. We then assign to each halo a mock galaxy with the absolute magnitude $M_X$ at which the effective number density $\neff(<M_X)$ of the parent galaxy sample equals $n_{\rm h}(>\vpeak)$.
+Assign absolute magnitudes to mock galaxies with no scatter in the luminosity\textendash \vpeak relation according to Eq.~\ref{eq:sham}. For each halo we find the cumulative number density $n_{\rm h}(>\vpeak)$ corresponding to its value of \vpeak. We then assign to each halo a mock galaxy with the absolute magnitude $M_X$ at which the effective number density $\neff(<M_X)$ of the parent galaxy sample equals $n_{\rm h}(>\vpeak)$.
 %
 \item \label{step:sham_scatter}
 To incorporate magnitude-dependent scatter into the luminosity\textendash \vpeak relation we assign to each mock galaxy a new absolute magnitude, $M'_X$, where $M'_X$ is drawn from a Gaussian distribution centered at $M_X$ with width $\sigmamag$, where $\sigmamag$ is proportional to the absolute value of $M_X$. We then assign absolute magnitudes to mock galaxies as in step \ref{step:nh}, but according to $M'_X$ instead of $M_X$. This method preserves both the galaxy luminosity function and the original \vpeak distribution.
@@ -274,13 +278,19 @@ Finally, we parameterize the dependence of \sigmamag and \sigmalos on absolute m
 %
 \begin{subequations}\label{eq:sigma_linear}
 \begin{align}
-  \sigmamag(M_X) &= s_{\rm mag}\, |M_X| + \sigma_{{\rm mag},0} \\
-  \sigmalos(M_X) &= s_{\rm los}\, |M_X| + \sigma_{{\rm los},0}.
+  \sigmamag(M_X) &= s_{\rm mag}\, M_X + \sigma_{{\rm mag},0} \\
+  \sigmalos(M_X) &= s_{\rm los}\, M_X + \sigma_{{\rm los},0}.
 \end{align}
 \end{subequations}
 %
-\noindent The best-fit values of $s_{\rm mag}$, $\sigma_{{\rm mag},0}$, $s_{\rm los}$, and $\sigma_{{\rm los},0}$ are given in Table~\ref{tab:scatter_params}. These values are determined by linear fits to $\sigmamag^i$ versus $M^i_X$, and $\sigmalos^i$ versus $M^i_X$, respectively, where $\sigmamag^i$ and $\sigmalos^i$ are the values that minimize \chisqred of \wprp in the $i$th magnitude bin, $M^i_X$. Figure~\ref{fig:zphot_mag-bins} shows the $z$-band and $W1$-band magnitude bins used for each photometric redshift bin.
+\noindent The best-fit values of $s_{\rm mag}$, $\sigma_{{\rm mag},0}$, $s_{\rm los}$, and $\sigma_{{\rm los},0}$ are given in Table~\ref{tab:scatter_params}. These values are determined by linear fits to $\sigmamag^i$ versus $\langle M^i_X \rangle$, and $\sigmalos^i$ versus $M^i_X$, respectively, where $\sigmamag^i$ and $\sigmalos^i$ are the values that minimize \chisqred of \wprp in the $i$th magnitude bin, $\langle M^i_X \rangle$. Figure~\ref{fig:zphot_mag-bins} shows the $z$-band and $W1$-band magnitude bins used for each photometric redshift bin.
 \end{enumerate}
+
+We find that weighting the linear fits in Eq.~\ref{eq:sigma_linear} by the number of galaxies in each magnitude bin (given in Table~\ref{tab:parent_samples}) yields values of \sigmamag and \sigmalos that fit the clustering better than unweighted fits, with the exception of the $z$-band model in the $0.6<\zphot<0.7$ redshift bin.
+
+We initially tried the range $\rp>0.1~\Mpch$ in each absolute magnitude bin to constrain \sigmamag and \sigmalos, but found the model unable to simultaneously fit both the one-halo ($\rp \lesssim 1\ \Mpch$) and two-halo ($\rp \gtrsim 1\ \Mpch$) terms of \wprp in the brightest magnitude bin---it consistently overpredicts the amplitude of \wprp on one-halo scales in this bin. We tested limiting the fitting range to $\rp > 1\ \Mpch$ for just the brightest magnitude bin, and found that this improves the overall fit somewhat, although our model still overpredicts one-halo clustering strength for the brightest galaxies (see Figures~\ref{fig:wp_all_opt} and \ref{fig:wp_all_ir}).
+
+TODO: degeneracy between (lower sigma SHAM, higher sigma LOS) and (higher sigma SHAM, lower sigma LOS) in brightest mag bin if limited to rp > 1 Mpc/h
 
 \begin{figure}
 \centering
@@ -291,29 +301,37 @@ Finally, we parameterize the dependence of \sigmamag and \sigmalos on absolute m
 \end{figure}
 
 
+\begin{figure*}
+\centering
+\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/Mz/z0p40-0p50/Mzlimn21p6_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/Mz/z0p50-0p60/Mzlimn21p6_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/Mz/z0p60-0p70/Mzlimn21p85_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+\\
+\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/Mz/z0p40-0p50/Mzlimn21p6_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch_mag-bins.png}
+\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/Mz/z0p50-0p60/Mzlimn21p6_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch_mag-bins.png}
+\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/Mz/z0p60-0p70/Mzlimn21p85_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch_mag-bins.png}
+\caption{TODO
+}
+\label{fig:wp_all_opt}
+\end{figure*}
+
+
+\begin{figure*}
+\centering
+\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/MW1/z0p40-0p50/MW1limn22p25_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/MW1/z0p50-0p60/MW1limn22p85_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/MW1/z0p60-0p70/MW1limn23p15_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+\\
+\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/MW1/z0p40-0p50/MW1limn22p25_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch_mag-bins.png}
+\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/MW1/z0p50-0p60/MW1limn22p85_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch_mag-bins.png}
+\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/MW1/z0p60-0p70/MW1limn23p15_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch_mag-bins.png}
+\caption{TODO
+}
+\label{fig:wp_all_ir}
+\end{figure*}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Mz
-0.4 < z < 0.5
-
-
-0.5 < z < 0.6
-
-
-0.6 < z < 0.7
-0.127, 3.226
-17.88, 516.86
-
-MW1
-0.4 < z < 0.5
-
-
-0.5 < z < 0.6
-
-
-0.6 < z < 0.7
-
-
-
 \begin{deluxetable}{ r r r r r }[h]
 \tablecaption{Best-fit values for the linear dependence of our SHAM model parameters \sigmamag and \sigmalos (Eq.~\ref{eq:sigma_linear}) on absolute magnitude.
 \label{tab:scatter_params}
@@ -326,21 +344,28 @@ MW1
 \multicolumn{5}{c}{$0.4 < \zphot < 0.5$}
 }
 \startdata
-$z$-band & x & x & x & x \\
-$W1$-band & x & x & x & x \\
+$z$-band & 0.130 & 3.253 & 11.648 & 372.47 \\
+$W1$-band & 0.200 & 4.963 & -6.58 & -39.50 \\
+%$z$-band & x & x & x & x \\
+%$W1$-band & x & x & x & x \\
 \cutinhead{$0.5 < \zphot < 0.6$}
-$z$-band & x & x & x & x \\
-$W1$-band & x & x & x & x \\
+$z$-band & 0.001 & 0.426 & 32.792 & 834.50 \\
+$W1$-band & 0.116 & 3.049 & -1.798 & 63.45 \\
+%$z$-band & x & x & x & x \\
+%$W1$-band & x & x & x & x \\
 \cutinhead{$0.6 < \zphot < 0.7$}
-$z$-band & x & x & x & x \\
-$W1$-band & x & x & x & x \\
+$z$-band\tablenotemark{a} & 0.122 & 3.133 & 15.853 & 468.32 \\
+$W1$-band &  0.225 & 5.709 & -3.598 & 24.17 \\
+%$z$-band\tablenotemark{a} & x & x & x & x \\
+%$W1$-band & x & x & x & x \\
 \enddata
+\tablenotetext{a}{TODO: unweighted fit for this set; all other sets use a fit weighted by the number of galaxies in each magnitude bin}
 \end{deluxetable}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Projected correlation functions}\label{subsec:wprp}
 
-The luminosity assignment stage of our modeling procedure involves just two free parameters, $\alpha$ and \sigmalos, which account for scatter in the luminosity\textendash\vcirc relation and photometric redshift errors of our target galaxy samples, respectively. We constrain these parameters by fitting the projected correlation functions of mock galaxy catalogs created from our model to those of the corresponding parent galaxy samples.
+The luminosity assignment stage of our modeling procedure involves just two free parameters, \sigmamag and \sigmalos, which account for scatter in the luminosity\textendash\vcirc relation and photometric redshift errors of our target galaxy samples, respectively. We constrain these parameters by fitting the projected correlation functions of mock galaxy catalogs created from our model to those of the corresponding parent galaxy samples.
 
 One goal of this paper is to exploit the completeness and enormous volume of DECaLS data, which comes at the expense of the precision clustering measurements achievable with spectroscopic redshifts. \citet{zhou_etal20b} has demonstrated the constraining power of the projected correlation function, \wprp, of DECaLS galaxies computed with line-of-sight distances derived from photometric redshifts (they use this statistic to constrain the halo occupation distribution (HOD, TODO: defined earlier?) parameters of ``DESI-like" LRGs selected from DECaLS DR7). The projected correlation function integrates the 3D correlation function, \xir, along the line-of-sight, effectively eliminating the effects of radial distance uncertainty due to photometric redshift errors:
 %
@@ -350,7 +375,7 @@ One goal of this paper is to exploit the completeness and enormous volume of DEC
 %
 \noindent where \rp is the projection of $r$ into the plane perpendicular to the line-of-sight distance, $\pi$.
 
-We use the \corrfunc package (ref) to calculate \wprp for both our target galaxy samples and mock catalogs in 19 logarithmic bins between ${\rp>0.033\ \Mpch}$ and ${\rp<64.4\ \Mpch}$.
+We use the \corrfunc package (ref) to calculate \wprp for both our target galaxy samples and mock catalogs in 19 logarithmic between ${\rp>0.1\ \Mpch}$ and ${\rp<64.4\ \Mpch}$.
 
 As our data samples are confined to narrow redshift ranges of width ${\Delta z_{\rm phot} = 0.1}$, photometric redshift errors will cause some galaxies that belong to a given redshift bin to scatter into an adjacent bin and be excluded from the calculation of \wprp for their true bin. To account for this we adopt the method used by \citet{zhou_etal20b} (see their Figure 8):\ instead of the autocorrelation function of galaxies within each redshift bin, we use the Landy-Szalay (ref) estimator for the cross-correlation of two samples, $D_1$ and $D_2$:
 %
@@ -358,7 +383,7 @@ As our data samples are confined to narrow redshift ranges of width ${\Delta z_{
 \wprp = 2\pimax\!\left(\frac{D_1D_2 - D_1R_2 - D_2R_1}{R_1R_2} + 1 \right).
 \end{equation}
 %
-\noindent Each term of Equation~\ref{eq:landy-szalay} denotes pair counts between two samples, where $D$ and $R$ respectively indicate samples of data (i.e.\ galaxies) and random points with the same angular and redshift distributions as the corresponding data sample. Here $D_1$ is all galaxies within a given redshift bin: ${\zmin < \zphot < \zmax}$, where \zmin and \zmax are the limits of the bin, while $D_2$ is all galaxies within a wider redshift range defined by ${(\zmin-\pimax) < \zphot < (\zmax+\pimax)}$, where ${\pimax=150~\Mpch}$.
+\noindent Each term of Eq.~\ref{eq:landy-szalay} denotes pair counts between two samples, where $D$ and $R$ respectively indicate samples of data (i.e.\ galaxies) and random points with the same angular and redshift distributions as the corresponding data sample. Here $D_1$ is all galaxies within a given redshift bin: ${\zmin < \zphot < \zmax}$, where \zmin and \zmax are the limits of the bin, while $D_2$ is all galaxies within a wider redshift range defined by ${(\zmin-\pimax) < \zphot < (\zmax+\pimax)}$, where ${\pimax=150~\Mpch}$.
 We verify our implementation of this method with \corrfunc by reproducing the projected correlation functions of DECaLS LRGs that \citet{zhou_etal20b} obtain (see their Figure 9) using different clustering code.
 
 DECaLS data includes catalogs of random points with the same angular sky coverage and mask information as the survey footprint, which we use to construct our random samples. We use 20 times as many random as data points for each galaxy sample, and draw redshifts for random points from the redshift distribution of the corresponding data sample.
@@ -385,18 +410,26 @@ With the covariance matrix in hand we quantify how successful any instance of ou
 \!\left({\rm Cov}^{-1}\right)_{ij}\!\left(\omega_j-\omega^{\rm mod}_j\right)\!,
 \end{equation}
 %
-\noindent where $N_{\rp}$ is the number of \rp bins used for fitting (we use $\rp>0.1~\Mpch$), $\nu$ is equal to $N_{\rp}$ minus the number of free model parameters, $\omega_i$ and $\omega_j$ are the data \wprp values in the $i$th and $j$th \rp bins, respectively, and $\omega^{\rm mod}_i$ and $\omega^{\rm mod}_j$ are the \wprp values of the relevant mock catalog in the $i$th and $j$th \rp bins, respectively.
+\noindent where $N_{\rp}$ is the number of \rp bins used for fitting, $\nu$ is equal to $N_{\rp}$ minus the number of free model parameters, $\omega_i$ and $\omega_j$ are the data \wprp values in the $i$th and $j$th \rp bins, respectively, and $\omega^{\rm mod}_i$ and $\omega^{\rm mod}_j$ are the \wprp values of the relevant mock catalog in the $i$th and $j$th \rp bins, respectively.
 
 
 \subsection{Galaxy color assignment}\label{subsec:color_assign}
 
-Age (distribution?) matching assumes a correlation between rest-frame galaxy color at fixed absolute magnitude and some proxy for the age of the halo in which each mock galaxy resides, with redder colors (i.e., older, quenched galaxies) generally assigned to older halos. Implementations of this technique at $z\sim0$ using spectroscopic galaxy redshifts from SDSS have used halo starvation redshift, \zstarve, for the halo age proxy \citep{hearin_watson13, hearin_etal14, safonova_etal21}. In general, \zstarve represents the redshift at which a galaxy loses its supply of cold gas, which leads to the quenching of star formation and the reddening of the galaxy. Multiple physical processes relevant to a halo's assembly history can affect the value of \zstarve for a given halo, which \citet{hearin_watson13} incorporate into this definition:
+Age distribution matching assumes a correlation between the distribution of galaxy color at fixed luminosity and the distribution of some proxy (at fixed model luminosity) for the age of the halo in which each mock galaxy resides, with redder colors (i.e., older, quenched galaxies) generally assigned to older halos. We equate the cumulative distribution $\mathcal{D}_{\rm gal}$ of galaxies of $K$-corrected color $\mathcal{C}$ at fixed absolute magnitude $M_X$ ($K$-corrected to the redshift of the relevant simulation snapshot) to the cumulative distribution $\mathcal{D}_{\rm halo}$ of halo age proxy $A$ at fixed model absolute magnitude:
+%
+\begin{equation}\label{eq:color_assign}
+\mathcal{D}_{\rm gal} ( < \mathcal{C}\ |\ M_X )=\mathcal{D}_{\rm halo}( < A\ |\ {\rm model}\ M_X ).
+\end{equation}
+%
+\noindent In Eq.~\ref{eq:color_assign} ${(\mathcal{C},M_X) \in \{(r-z, M_z), (M_{W1}, r-W1)\}}$.
+
+Implementations of age distribution matching at $z\sim0$ using spectroscopic galaxy redshifts from SDSS have used halo starvation redshift, \zstarve, for the halo age proxy $A$ in Eq.~\ref{eq:color_assign} \citep{hearin_watson13, hearin_etal14, safonova_etal21}. In general, \zstarve represents the redshift at which a galaxy loses its supply of cold gas, which leads to the quenching of star formation and the reddening of the galaxy. Multiple physical processes relevant to a halo's assembly history can affect the value of \zstarve for a given halo, which \citet{hearin_watson13} incorporate into the following definition:
 %
 \begin{equation}\label{eq:zstarve}
 \zstarve \equiv \max\{\zchar,\, \zacc,\, \zform\}.
 \end{equation}
 %
-\noindent In Equation~\ref{eq:zstarve}:
+\noindent In Eq.~\ref{eq:zstarve}:
 
 \begin{itemize}
 \item \zchar is either the redshift at which a halo's mass first exceeds some characteristic value, \mchar, or the redshift of the relevant simulation snapshot (\zsim) for halos that never achieve \mchar,
@@ -423,7 +456,7 @@ Age (distribution?) matching assumes a correlation between rest-frame galaxy col
 %
 \noindent where ${c_{\rm vir} = R_{\rm vir}/R_{\rm s}}$ is a halo's concentration at the time of observation, indicated by $a_0$. For host halos $a_0$ is the scale factor of the relevant simulation snapshot, while for subhalos $a_0$ is the scale factor at the time of accretion: ${\zacc = 1/{a_0} - 1}$. $R_{\rm vir}$ is the virial radius of a halo, and $R_{\rm s}$ is the NFW scale radius (ref). \citet{hearin_watson13} use ${\mchar=10^{12}\ \hmsun}$, and note that their results are insensitive to the precise value of \mchar they use. We adopt their value for this work.
 
-We compute \zstarve for all halos in our model from the \texttt{ROCKSTAR} halo merger trees available for MDPL2. Figure~\ref{fig:zstarve}
+We compute \zstarve for all halos in our model from the \texttt{ROCKSTAR} halo merger trees available for MDPL2. Figure~\ref{fig:zstarve_example} shows sample halo mass accretion histories and corresponding \zstarve values for four randomly selected halos from the $\zsim=0.425(31)$ snapshot of MDPL2.
 
 \begin{figure}
 \centering
@@ -433,11 +466,12 @@ We compute \zstarve for all halos in our model from the \texttt{ROCKSTAR} halo m
 \label{fig:zstarve_example}
 \end{figure}
 
+An illustration of our model color assignment algorithm (Eq.~\ref{eq:color_assign}) with age distribution matching is shown in Figure~\ref{fig:color_assign} for the $z$-band and ${0.4<\zphot<0.5}$ redshift bin.
 
 \begin{figure}
 \centering
 \includegraphics[width=\linewidth]{../figures/model_color_CDF_z0p40-0p50_Mzlimn21p6_zstarve.png}
-\caption{Illustration of the model color assignment procedure (step~\ref{subsec:color_assign}), which equates halo \zstarve with galaxy color at fixed luminosity. The solid gray curve is the cumulative distribution of $^{0.43}(r-z)$ color for galaxies in the $-22.5 < {^{0.43}M_z} < -22.55$ luminosity bin, while the dotted purple curve is the cumulative distribution of halo \zstarve for mock galaxies in the same luminosity bin. The magenta arrows indicate that a mock galaxy in this luminosity bin in a halo with $\zstarve=2.8$ is assigned a $^{0.43}(r-z)$ color of $0.92$. The faint gray and purple curves are the galaxy color and halo \zstarve distributions for additional luminosity bins. An equivalent procedure is used to assign $r-W1$ model colors at fixed $M_{W1}$ and in other redshift bins.
+\caption{Illustration of the model color assignment procedure (\S\ref{subsec:color_assign}), which equates halo \zstarve with galaxy color at fixed luminosity. The solid gray curve is the cumulative distribution of $^{0.43}(r-z)$ color for galaxies in the $-22.5 < {^{0.43}M_z} < -22.55$ luminosity bin, while the dotted purple curve is the cumulative distribution of halo \zstarve for mock galaxies in the same luminosity bin. The magenta arrows indicate that a mock galaxy in this luminosity bin in a halo with $\zstarve=2.8$ is assigned a $^{0.43}(r-z)$ color of $0.92$. The faint gray and purple curves are the galaxy color and halo \zstarve distributions for additional luminosity bins. An equivalent procedure is used to assign $r-W1$ model colors at fixed $M_{W1}$ and in other redshift bins.
 }
 \label{fig:color_assign}
 \end{figure}
@@ -445,78 +479,152 @@ We compute \zstarve for all halos in our model from the \texttt{ROCKSTAR} halo m
 
 \subsection{Mock LRG selection}\label{subsec:mock_lrg}
 
+\begin{figure*}
+\centering
+\includegraphics[width=0.48\linewidth]{../figures/lrgfrac_Mz_r-z_z0p40-0p50.png}
+\includegraphics[width=0.48\linewidth]{../figures/lrgfrac_MW1_r-W1_z0p40-0p50.png} \\
+
+\includegraphics[width=0.48\linewidth]{../figures/lrgfrac_Mz_r-z_z0p50-0p60.png}
+\includegraphics[width=0.48\linewidth]{../figures/lrgfrac_MW1_r-W1_z0p50-0p60.png} \\
+
+\includegraphics[width=0.48\linewidth]{../figures/lrgfrac_Mz_r-z_z0p60-0p70.png}
+\includegraphics[width=0.48\linewidth]{../figures/lrgfrac_MW1_r-W1_z0p60-0p70.png} \\
+\caption{LRG fractions in color--magnitude space used to select optically- and IR-selected LRG samples in our mock galaxy catalogs.
+The first and second columns show optically- and IR-selected LRGs, respectively, in $r-z$ color versus $M_z$ magnitude space.
+The third and fourth columns show optically- and IR-selected LRGs, respectively, in $r-W1$ color versus $M_{W1}$ magnitude space.
+The top, center, and bottom rows respectively show redshift bins $0.4<\zphot<0.5$, $0.5<\zphot<0.6$, and $0.6<\zphot<0.7$.
+Note that the distributions of optically-selected LRGs in optical space ($r-z$ versus $M_z$; first column) and IR-selected LRGs in IR space ($r-W1$ versus $M_{W1}$; fourth column) are compact by design, i.e., the fraction of galaxies that are LRGs is either $\sim0$ or $\sim1$ nearly everywhere in color--magnitude space. In contract, the distributions of IR-selected LRGs in optical space (second column) and optically-selected LRGs in IR space (third column) have shallower gradients between 0 and 1, especially toward dimmer magnitudes.
+TODO: $<1$ optically- and IR-selected LRG fractions in brightest region of optical space is interesting! These are some of the brightest red-sequence galaxies, yet some are excluded by the (not ultimately used for the main survey) DESI optical LRG selection function. We figured out why by looking at the where these galaxies are in the full set of HEREHERE (could also be due to absolute magnitude uncertainty from photometric redshifts).
+}
+\label{fig:lrg_frac}
+\end{figure*}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{../figures/notLRG-outliers_optical.png}
+\caption{
+}
+\label{fig:not-lrg_outliers}
+\end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Results}\label{sec:results}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{figure}
+\begin{figure*}
 \centering
 %DATA \hfill MODEL \\
-\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_z0p40-0p50_IR-lrg.png}
-% \includegraphics[width=0.48\linewidth]{../figures/model.png} \\
+\includegraphics[width=0.24\linewidth]{../figures/cmd_MW1-rW1_z0p40-0p50_IR-lrg.png}
+\includegraphics[width=0.24\linewidth]{../figures/cmd_MW1-rW1_zsnap0p42531_IR-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+\includegraphics[width=0.24\linewidth]{../figures/cmd_MW1-rW1_z0p40-0p50_optical-lrg.png}
+\includegraphics[width=0.24\linewidth]{../figures/cmd_MW1-rW1_zsnap0p42531_opt-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
 \\
-\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_z0p50-0p60_IR-lrg.png}
-%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
+\includegraphics[width=0.24\linewidth]{../figures/cmd_MW1-rW1_z0p50-0p60_IR-lrg.png}
+\includegraphics[width=0.24\linewidth]{../figures/cmd_MW1-rW1_zsnap0p52323_IR-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+\includegraphics[width=0.24\linewidth]{../figures/cmd_MW1-rW1_z0p50-0p60_optical-lrg.png}
+\includegraphics[width=0.24\linewidth]{../figures/cmd_MW1-rW1_zsnap0p52323_opt-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
 \\
-\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_z0p60-0p70_IR-lrg.png}
-%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
+\includegraphics[width=0.24\linewidth]{../figures/cmd_MW1-rW1_z0p60-0p70_IR-lrg.png}
+\includegraphics[width=0.24\linewidth]{../figures/cmd_MW1-rW1_zsnap0p62813_IR-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+\includegraphics[width=0.24\linewidth]{../figures/cmd_MW1-rW1_z0p60-0p70_optical-lrg.png}
+\includegraphics[width=0.24\linewidth]{../figures/cmd_MW1-rW1_zsnap0p62813_opt-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
 \caption{TODO
 }
-\label{fig:}
-\end{figure}
+\label{fig:cmd_ir_lrg}
+\end{figure*}
 
 
-\begin{figure}
+\begin{figure*}
 \centering
 %DATA \hfill MODEL \\
-\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_z0p40-0p50_optical-lrg.png}
-%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
+\includegraphics[width=0.24\linewidth]{../figures/cmd_Mz-rz_z0p40-0p50_IR-lrg.png}
+\includegraphics[width=0.24\linewidth]{../figures/cmd_Mz-rz_zsnap0p42531_IR-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+\includegraphics[width=0.24\linewidth]{../figures/cmd_Mz-rz_z0p40-0p50_optical-lrg.png}
+\includegraphics[width=0.24\linewidth]{../figures/cmd_Mz-rz_zsnap0p42531_opt-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
 \\
-\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_z0p50-0p60_optical-lrg.png}
-%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
+\includegraphics[width=0.24\linewidth]{../figures/cmd_Mz-rz_z0p50-0p60_IR-lrg.png}
+\includegraphics[width=0.24\linewidth]{../figures/cmd_Mz-rz_zsnap0p52323_IR-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+\includegraphics[width=0.24\linewidth]{../figures/cmd_Mz-rz_z0p50-0p60_optical-lrg.png}
+\includegraphics[width=0.24\linewidth]{../figures/cmd_Mz-rz_zsnap0p52323_opt-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
 \\
-\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_z0p60-0p70_optical-lrg.png}
-%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
+\includegraphics[width=0.24\linewidth]{../figures/cmd_Mz-rz_z0p60-0p70_IR-lrg.png}
+\includegraphics[width=0.24\linewidth]{../figures/cmd_Mz-rz_zsnap0p62813_IR-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+\includegraphics[width=0.24\linewidth]{../figures/cmd_Mz-rz_z0p60-0p70_optical-lrg.png}
+\includegraphics[width=0.24\linewidth]{../figures/cmd_Mz-rz_zsnap0p62813_opt-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
 \caption{TODO
 }
-\label{fig:}
-\end{figure}
+\label{fig:cmd_opt_lrg}
+\end{figure*}
 
 
-\begin{figure}
-\centering
-%DATA \hfill MODEL \\
-\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_z0p40-0p50_IR-lrg.png}
-%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
-\\
-\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_z0p50-0p60_IR-lrg.png}
-%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
-\\
-\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_z0p60-0p70_IR-lrg.png}
-%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
-\caption{TODO
-}
-\label{fig:}
-\end{figure}
-
-
-\begin{figure}
-\centering
-%DATA \hfill MODEL \\
-\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_z0p40-0p50_optical-lrg.png}
-%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
-\\
-\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_z0p50-0p60_optical-lrg.png}
-%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
-\\
-\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_z0p60-0p70_optical-lrg.png}
-%\includegraphics[width=0.48\linewidth]{../figures/model.png} \\
-\caption{TODO
-}
-\label{fig:}
-\end{figure}
+%\begin{figure}
+%\centering
+%%DATA \hfill MODEL \\
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_z0p40-0p50_IR-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_zsnap0p42531_IR-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+%\\
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_z0p50-0p60_IR-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_zsnap0p52323_IR-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+%\\
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_z0p60-0p70_IR-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_zsnap0p62813_IR-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+%\caption{TODO
+%}
+%\label{fig:cmd_ir_lrg_ir}
+%\end{figure}
+%
+%
+%\begin{figure}
+%\centering
+%%DATA \hfill MODEL \\
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_z0p40-0p50_optical-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_zsnap0p42531_opt-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+%\\
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_z0p50-0p60_optical-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_zsnap0p52323_opt-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+%\\
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_z0p60-0p70_optical-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_MW1-rW1_zsnap0p62813_opt-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+%\caption{TODO
+%}
+%\label{fig:cmd_ir_lrg_opt}
+%\end{figure}
+%
+%
+%\begin{figure}
+%\centering
+%%DATA \hfill MODEL \\
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_z0p40-0p50_IR-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_zsnap0p42531_IR-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+%\\
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_z0p50-0p60_IR-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_zsnap0p52323_IR-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+%\\
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_z0p60-0p70_IR-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_zsnap0p62813_IR-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+%\caption{TODO
+%}
+%\label{fig:cmd_opt_lrg_ir}
+%\end{figure}
+%
+%
+%\begin{figure}
+%\centering
+%%DATA \hfill MODEL \\
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_z0p40-0p50_optical-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_zsnap0p42531_opt-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+%\\
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_z0p50-0p60_optical-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_zsnap0p52323_opt-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+%\\
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_z0p60-0p70_optical-lrg.png}
+%\includegraphics[width=0.48\linewidth]{../figures/cmd_Mz-rz_zsnap0p62813_opt-lrg_model_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+%\caption{TODO
+%}
+%\label{fig:cmd_opt_lrg_opt}
+%\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Model predictions and discussion}\label{sec:predictions}
@@ -528,9 +636,79 @@ Relative comparisons (IR vs optical) removes dependence on specific cosmology
 
 Incomplete central halo occupation by DESI LRGs at highest halo masses due to selection cuts
 
-Fit analytic HOD to my empirical
+Fit analytic HOD to my empirical HOD
 
 Compare to Rongpu's DESI-like LRG HOD fits?
+
+
+\begin{figure*}
+\centering
+\includegraphics[width=0.24\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/Mz/z0p40-0p50/wp_z0p40-0p50_Mzlimn21p6_LRGopt_data-vs-mock.png}
+\includegraphics[width=0.24\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/Mz/z0p40-0p50/wp_z0p40-0p50_Mzlimn21p6_LRG_data-vs-mock.png}
+\includegraphics[width=0.24\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/MW1/z0p40-0p50/wp_z0p40-0p50_MW1limn22p25_LRGopt_data-vs-mock.png}
+\includegraphics[width=0.24\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/MW1/z0p40-0p50/wp_z0p40-0p50_MW1limn22p25_LRG_data-vs-mock.png}
+\\
+\includegraphics[width=0.24\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/Mz/z0p50-0p60/wp_z0p50-0p60_Mzlimn21p6_LRGopt_data-vs-mock.png}
+\includegraphics[width=0.24\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/Mz/z0p50-0p60/wp_z0p50-0p60_Mzlimn21p6_LRG_data-vs-mock.png}
+\includegraphics[width=0.24\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/MW1/z0p50-0p60/wp_z0p50-0p60_MW1limn22p85_LRGopt_data-vs-mock.png}
+\includegraphics[width=0.24\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/MW1/z0p50-0p60/wp_z0p50-0p60_MW1limn22p85_LRG_data-vs-mock.png}
+\\
+\includegraphics[width=0.24\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/Mz/z0p60-0p70/wp_z0p60-0p70_Mzlimn21p85_LRGopt_data-vs-mock.png}
+\includegraphics[width=0.24\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/Mz/z0p60-0p70/wp_z0p60-0p70_Mzlimn21p85_LRG_data-vs-mock.png}
+\includegraphics[width=0.24\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/MW1/z0p60-0p70/wp_z0p60-0p70_MW1limn23p15_LRGopt_data-vs-mock.png}
+\includegraphics[width=0.24\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/MW1/z0p60-0p70/wp_z0p60-0p70_MW1limn23p15_LRG_data-vs-mock.png}
+%% z-band model; optical LRG
+%%\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/Mz/z0p40-0p50/wp_z0p40-0p50_Mzlimn21p6_LRGopt_data-vs-mock.png}
+%\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/Mz/z0p50-0p60/wp_z0p50-0p60_Mzlimn21p6_LRGopt_data-vs-mock.png}
+%\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/Mz/z0p60-0p70/wp_z0p60-0p70_Mzlimn21p85_LRGopt_data-vs-mock.png}
+%\\
+%% z-band model; IR LRG
+%%\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/Mz/z0p40-0p50/wp_z0p40-0p50_Mzlimn21p6_LRG_data-vs-mock.png}
+%\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/Mz/z0p50-0p60/wp_z0p50-0p60_Mzlimn21p6_LRG_data-vs-mock.png}
+%\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/Mz/z0p60-0p70/wp_z0p60-0p70_Mzlimn21p85_LRG_data-vs-mock.png}
+%\\
+%% W1-band model; optical LRG
+%%\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/MW1/z0p40-0p50/wp_z0p40-0p50_MW1limn22p25_LRGopt_data-vs-mock.png}
+%\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/MW1/z0p50-0p60/wp_z0p50-0p60_MW1limn22p85_LRGopt_data-vs-mock.png}
+%\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/MW1/z0p60-0p70/wp_z0p60-0p70_MW1limn23p15_LRGopt_data-vs-mock.png}
+%\\
+%% W1-band model; IR LRG
+%%\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/MW1/z0p40-0p50/wp_z0p40-0p50_MW1limn22p25_LRG_data-vs-mock.png}
+%\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/MW1/z0p50-0p60/wp_z0p50-0p60_MW1limn22p85_LRG_data-vs-mock.png}
+%\includegraphics[width=0.33\linewidth]{../figures/wp_model-vs-data/rpmin0p1Mpch_brightest-mag-bin-rp1Mpch/MW1/z0p60-0p70/wp_z0p60-0p70_MW1limn23p15_LRG_data-vs-mock.png}
+\caption{TODO
+}
+\label{fig:lrg_wp}
+\end{figure*}
+
+
+
+\begin{figure*}
+\centering
+\includegraphics[width=0.48\linewidth]{../figures/hod-lrg_zsnap0p42531_Mzlimn21p6_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+\includegraphics[width=0.48\linewidth]{../figures/hod-lrg_zsnap0p42531_MW1limn22p25_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+\\
+\includegraphics[width=0.48\linewidth]{../figures/hod-lrg_zsnap0p52323_Mzlimn21p6_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+\includegraphics[width=0.48\linewidth]{../figures/hod-lrg_zsnap0p52323_MW1limn22p85_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+\\
+\includegraphics[width=0.48\linewidth]{../figures/hod-lrg_zsnap0p62813_Mzlimn21p85_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+\includegraphics[width=0.48\linewidth]{../figures/hod-lrg_zsnap0p62813_MW1limn23p15_rpmin0p1Mpch_brightest-mag-bin-rp1Mpch.png}
+\caption{TODO
+}
+\label{fig:lrg_hod}
+\end{figure*}
+
+
+
+\begin{figure*}
+\centering
+\includegraphics[width=0.9\linewidth]{../figures/hod-compare_zhou+21_Mz.png} \\
+\includegraphics[width=0.9\linewidth]{../figures/hod-compare_zhou+21_MW1.png}
+\caption{TODO
+}
+\label{fig:hod_compare}
+\end{figure*}
+
 
 
 %Future work:

@@ -4,7 +4,7 @@ from astropy.io import ascii
 
 
 
-BASEDIRS = ["/uufs/astro.utah.edu/common/home/u6032461/DESI_LRG_SHAM",
+BASEDIRS = ["/uufs/astro.utah.edu/common/home/u6032461/desi_lrg_sham",
             "/Users/aberti/Desktop/research/desi_lrg_sham",
             ]
 

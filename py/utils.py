@@ -173,36 +173,35 @@ def cov_from_rp_pi( rp_pi_counts, cross="GXG", rp_mids=None, pimax=150., quiet=T
 
 
 
-# def get_rp_use_tag(rp_use_range, return_tag=True, return_label=False):
-#     rp_use_min, rp_use_max = rp_use_range
-#     if (rp_use_min==None) & (rp_use_max==None):
-#         rp_use_tag   = "all-rp-bins"
-#         rp_use_label = "all-rp-bins"
+def get_rp_use_tag(rp_use_range, return_tag=True, return_label=False):
+    rp_use_min, rp_use_max = rp_use_range
+    if (rp_use_min==None) & (rp_use_max==None):
+        rp_use_tag   = "all-rp-bins"
+        rp_use_label = "all-rp-bins"
         
-#         if rp_use_max != None:
-#             rp_use_tag   = f"rpmax{int(rp_use_max)}Mpch"
-#             rp_use_label = r"$r_{\rm p} <\ $" + f"${int(rp_use_max)}$" + r"\ $h^{-1} {\rm Mpc}$"
-#     elif (rp_use_min==None) and not (rp_use_max==None):
-#         assert(rp_use_max >= 20)
-#         rp_use_tag   = f"rpmax{str(round(rp_use_max,2)).replace('.','p')}Mpch"
-#         rp_use_label = r"$r_{\rm p} <\ $" + f"${rp_use_max:.2f}$" + r"\ $h^{-1} {\rm Mpc}$"
-#     elif not (rp_use_min==None) and (rp_use_max==None):
-#         rp_use_tag   = f"rpmin{str(round(rp_use_min,2)).replace('.','p')}Mpch"
-#         rp_use_label = r"$r_{\rm p} >\ $" + f"${rp_use_min:.2f}$" + r"\ $h^{-1} {\rm Mpc}$"
-#     else:
-#         assert((rp_use_min >= 0) & (rp_use_min < rp_use_max))
-#         rp_use_tag   = f"rp{str(round(rp_use_min,2)).replace('.','p')}-{int(rp_use_max)}Mpch"
-#         rp_use_label = f"${rp_use_min:.2f}$" + r"$\ < r_{\rm p} <\ $" + f"${int(rp_use_max)}$" + r"$\ h^{-1} {\rm Mpc}$"
+        if rp_use_max != None:
+            rp_use_tag   = f"rpmax{int(rp_use_max)}Mpch"
+            rp_use_label = r"$r_{\rm p} < $" + f"${int(rp_use_max)}$" + r" $h^{-1} {\rm Mpc}$"
+    elif (rp_use_min==None) and not (rp_use_max==None):
+        assert(rp_use_max >= 20)
+        rp_use_tag   = f"rpmax{str(round(rp_use_max,2)).replace('.','p')}Mpch"
+        rp_use_label = r"$r_{\rm p} < $" + f"${rp_use_max:.2f}$" + r" $h^{-1} {\rm Mpc}$"
+    elif not (rp_use_min==None) and (rp_use_max==None):
+        rp_use_tag   = f"rpmin{str(round(rp_use_min,2)).replace('.','p')}Mpch"
+        rp_use_label = r"$r_{\rm p} > $" + f"${rp_use_min:.2f}$" + r" $h^{-1} {\rm Mpc}$"
+    else:
+        assert((rp_use_min >= 0) & (rp_use_min < rp_use_max))
+        rp_use_tag   = f"rp{str(round(rp_use_min,2)).replace('.','p')}-{int(rp_use_max)}Mpch"
+        rp_use_label = f"${rp_use_min:.2f}$" + r"$ < r_{\rm p} < $" + f"${int(rp_use_max)}$" + r"$ h^{-1} {\rm Mpc}$"
 
-#     if (return_tag==True & return_label==False):
-#         return rp_use_tag
-#     elif (return_label==True & return_tag==False):
-#         return rp_use_label
-#     elif (return_tag==True & return_label==True):
-#         return rp_use_tag, rp_use_label
-#     else:
-#         return rp_use_tag
-    
+    if (return_tag==True & return_label==False):
+        return rp_use_tag
+    elif (return_label==True & return_tag==False):
+        return rp_use_label
+    elif (return_tag==True & return_label==True):
+        return rp_use_tag, rp_use_label
+    else:
+        return rp_use_tag
     
 
 

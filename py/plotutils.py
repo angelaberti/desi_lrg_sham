@@ -30,6 +30,7 @@ fig_labels = {"vpeak"     : r"$v_{\rm peak}\ [{\rm km\ s}^{-1}]$",
               "rp"        : r"$r_{\rm p}\ \left(h^{-1}{\rm Mpc}\right)$",
               "wp"        : r"$\omega_{\rm p}(r_{\rm p})\ \left(h^{-1}{\rm Mpc}\right)$",
               "rpwp"      : r"$r_{\rm p}\times\omega_{\rm p}(r_{\rm p})\ \left(h^{-2}{\rm Mpc}^2\right)$",
+              "log_mvir"  : r"$\log(M_{\rm vir}\ h\ M_{\odot}^{-1})$",
              }
 
 
