@@ -13,7 +13,7 @@ from utils import *
 from params import BASEDIR, DATADIR, MOCKDIR, get_zsnap_data, get_sham_var_bins, get_abs_mag_lim
 
 fname = sys.argv[1]
-zmin  = float(fname.split("_")[0][5:8].replace("p","."))
+zmin  = float(sys.argv[2])
 
 if "MW1" in fname:
     band = "MW1"
@@ -59,7 +59,6 @@ if os.path.exists( f"{fpath}/{fname}" ):
     cat = Table(np.load( f"{fpath}/{fname}" ))
 else:
     raise Exception(f"{fpath}/{fname} not found!")
-
 
 
 #-- add placeholder columns
@@ -342,7 +341,7 @@ for i in range(len(color_bins_IR)-1):
                 print(f"{k}/{N_bins}\t{color_bins_IR[i]:.2f}\t{mag_bins_IR[j]:.2f}\t{N_mock}\t{targ_lrg_IR}")
         k += 1
 
-fname_out = f"{fname[:-4]}_LRG-flagged.npy"
+fname_out = f"{fname[:-4]}-LRG.npy"
 print(f"Saving {fname_out}...")
 
 np.save(f"{fpath}/{fname_out}", cat)

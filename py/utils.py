@@ -4,6 +4,13 @@ from params import get_abs_mag_bins_clust
 
 from datetime import datetime
 
+
+def rp_bins_from_file(bin_file):
+    b = np.loadtxt(bin_file).T
+    rp_bins = np.concatenate([b[0],[b[1][-1]]])
+    rp_mids = 0.5*(rp_bins[1:] + rp_bins[:-1])
+    return rp_bins, rp_mids
+
 def now():
     return f"[{str(datetime.now().time())[:-7]}]"
 
@@ -100,12 +107,15 @@ def get_abs_mag_bin_label(tag):
         mag_min = mag1
     
     if (mag_max - mag_min) > 5:
-        label = band + f" $< {mag_max}$"
+        label = band + f" $< {mag_max:2f}$"
     elif (mag_max - mag_min) < -5:
-        label = f"${mag_min} <$ " + band
+        label = f"${mag_min:2f} <$ " + band
     else:
-        label = f"${mag_min} <$ " + band + f" $< {mag_max}$"
+        label = f"${mag_min:2f} <$ " + band + f" $< {mag_max:2f}$"
 
+    label = label.replace("00000","0")
+    label = label.replace("0000","")
+    label = label.replace("$ $"," ")
     return label
 
 
@@ -173,7 +183,7 @@ def cov_from_rp_pi( rp_pi_counts, cross="GXG", rp_mids=None, pimax=150., quiet=T
 
 
 
-def get_rp_use_tag(rp_use_range, return_tag=True, return_label=False):
+def get_rp_use_tag(rp_use_range, brightest_mag_bin_rp1Mpch=False, return_tag=True, return_label=False):
     rp_use_min, rp_use_max = rp_use_range
     if (rp_use_min==None) & (rp_use_max==None):
         rp_use_tag   = "all-rp-bins"
@@ -193,6 +203,9 @@ def get_rp_use_tag(rp_use_range, return_tag=True, return_label=False):
         assert((rp_use_min >= 0) & (rp_use_min < rp_use_max))
         rp_use_tag   = f"rp{str(round(rp_use_min,2)).replace('.','p')}-{int(rp_use_max)}Mpch"
         rp_use_label = f"${rp_use_min:.2f}$" + r"$ < r_{\rm p} < $" + f"${int(rp_use_max)}$" + r"$ h^{-1} {\rm Mpc}$"
+
+    if brightest_mag_bin_rp1Mpch==True:
+        rp_use_tag += "_brightest-mag-bin-rp1Mpch"
 
     if (return_tag==True & return_label==False):
         return rp_use_tag

@@ -6,26 +6,15 @@ import numpy as np
 import itertools as it
 
 from params import BASEDIR, DATADIR, SIMDIR, MOCKDIR, H0, Om0
-from params import get_zsnap_data, get_boxsize, get_abs_mag_lim, get_sham_var_bins
-# from params import nbins, rp_min, rp_max, rp_bins, rp_mids, bin_file, get_abs_mag_bins_clust
+from params import get_zsnap_data, get_boxsize, get_abs_mag_lim
 
 from utils import *
 
 from astropy.table import Table, Column, hstack, vstack, join
-from astropy.io import fits, ascii
-# from astropy.cosmology import FlatLambdaCDM
-# cosmo = FlatLambdaCDM(H0=H0, Om0=Om0)
-# from astropy.constants import c as c_speed
-# from astropy import units as u
-
-# from datetime import datetime
-
-from halocat_history import read_halocat
 
 sim_tag      = "mdpl2"
 sham_tag     = "vpeak"
 d            = "south"
-sham_tag_min = 125  #-- km/s
 zmag_lim     = 20.7
 
 quiet       = True if (("-q" in sys.argv) | ("--quiet" in sys.argv)) else False
@@ -34,7 +23,7 @@ print_every = 10
 #-- load galaxy parent sample statistics
 #-- first define relelvant parameter values
 this_mock_name = sys.argv[1]
-zmin = float(this_mock_name.split("_")[0][5:8].replace("p","."))
+zmin = float(sys.argv[2]) #= float(this_mock_name.split("_")[0][5:8].replace("p","."))
 
 if "MW1" in this_mock_name:
     band = "MW1"
@@ -80,46 +69,23 @@ if not quiet:
     print(f"scale = {a}")
 
 this_mock_dir  = f"{MOCKDIR}/{sim_tag}/{sham_tag}/{d}"
-save_as        = f"{this_mock_dir}/{this_mock_name}"
+galcat_fname   = f"{this_mock_dir}/{this_mock_name}"
 
-if os.path.exists( save_as ):
+if os.path.exists( galcat_fname ):
     if not quiet:
-        print(f"Loading {save_as}...")
-    cat = Table(np.load( save_as ))
+        print(f"Loading {galcat_fname}...")
+    galcat = Table(np.load( galcat_fname ))
 else:
-    raise Exception(f"{save_as} not found!")
+    raise Exception(f"{galcat_fname} not found!")
 
 if not quiet:
-    print(len(cat))
+    print(len(galcat))
     
 #-- update column name(s)
-if "halo_id" not in cat.colnames:
-    cat.rename_column("id", "halo_id")
+if "halo_id" not in galcat.colnames:
+    galcat.rename_column("id", "halo_id")
 
-x_cols = ["nh_inferred", f"{band}_scattered"]
-for c in x_cols:
-    if c in cat.colnames:
-        cat.remove_column(c)
-
-galcat  = cat.copy()
-halocat = cat.copy()
-del cat
-
-galcat = galcat[galcat["galaxy"]==True]
-galcat_name = f"{this_mock_name[:-4]}" + "_galcat.npy"
-
-halocat   = halocat[halocat["galaxy"]==False]
-keep_cols = ["halo_id", "pid", "upid", "mvir", "parent_mvir"]
-halocat.remove_columns([i for i in halocat.colnames if i not in keep_cols])
-halocat_name = f"{this_mock_name[:-4]}" + "_halocat.npy"
-
-np.save(f"{this_mock_dir}/{halocat_name}", halocat)
-if not quiet:
-    print(len( halocat ))
-
-if not quiet:
-    print(len( galcat ))
-
+save_as = f"{galcat_fname[:-4]}-hist.npy"
 
 #-- add histories
 cnames = galcat.colnames
@@ -156,5 +122,6 @@ if ("mvir_hist" not in cnames) | ("rvir_hist" not in cnames) | ("rs_hist" not in
         galcat_with_hist[f"{col}_hist"] = galcat_with_hist[f"{col}_hist"][:,1:]
     if not quiet:
         print(f"Histories added for {len(galcat_with_hist)} / {len(galcat)} (sub)halos")
-        print(f"Saving {galcat_name}...")
-    np.save(f"{this_mock_dir}/{galcat_name}", galcat_with_hist)
+        print(f"Saving {save_as}...")
+
+    np.save( save_as, galcat_with_hist )

@@ -49,19 +49,21 @@ while not os.path.exists(m):
     i += 1
 MOCKDIR = m
 
-#-- clustering rp bin parameters
-nbins   = 19
-rp_min  = 0.0333
-rp_max  = 64.4098
-rp_bins = np.logspace( np.log10(rp_min), np.log10(rp_max), nbins + 1 )
-rp_mids = np.array([ 10**np.mean(np.log10(rp_bins)[i:i+2]) for i in np.arange(len(rp_bins)-1) ])
+#-- rp bins for bin_file (NOT comoving); used for DR9 data clustering measurements
+# nbins   = 19
+# rp_min  = 0.0333
+# rp_max  = 64.4098
+# rp_bins = np.logspace( np.log10(rp_min), np.log10(rp_max), nbins + 1 )
+# rp_mids = np.array([ 10**np.mean(np.log10(rp_bins)[i:i+2]) for i in np.arange(len(rp_bins)-1) ])
 
 bin_file          = f"{BASEDIR}/clustering/rp_bins.txt"
 bin_file_comoving = f"{BASEDIR}/clustering/rp_bins_comoving.txt"
+bin_file_test     = f"{BASEDIR}/clustering/rp_bins_test.txt"  #-- exact Zhou+ 2021 rp bins
 
 cosmo_params = {"mdpl2":(67.77,0.307115)}
 
 H0, Om0 = cosmo_params["mdpl2"]
+
 
 
 def get_abs_mag_lim(zmin, band):
