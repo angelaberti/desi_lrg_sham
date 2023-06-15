@@ -31,7 +31,18 @@ In addition to changes made in response to the referee?s comments, we have also 
 \noindent \reftxt{
 I have a few queries regarding this definition of the ``starvation redshift", which is used as the proxy for halo age.\ Firstly, ``z\_acc" is defined as the time when a subhalo accretes onto a parent halo--is this simply set by when it crosses the host's R\_vir, or as the time when the halo shows a decrease in mass from its peak mass (in the assembly history)? I am next curious about the quantity ``M\_char", which is set at $10^{12}$ Msun/h based on Hearin \& Watson (2013).\ What sets this value? Is it purely empirical or there a physical interpretation as to why this mass scale is relevant (such as e.g.\ being roughly the regime beyond which AGN feedback starts to become important)? While I understand that the specific value might not affect the conclusions in any significant way, it would be helpful if the authors could elaborate a little.}
 
-add sentence explaining exactly what z\_acc, M\_char are
+We have added the following to \S2.1.2 to clarify the meaning of z\_acc:
+
+\begin{quotation}
+Hearin \& Watson (2013) follow Behroozi et al. (2012c), which defines $z_{\rm acc}$ as the snapshot after which a subhalo always remains a subhalo. They note that alternative definitions, such as that of Wetzel et al. (2014), where $z_{\rm acc}$ is the snapshot at which a subhalo has been identified as such for two consecutive snapshots, have little impact on their results.
+\end{quotation}
+
+We have also expanded the description of M\_char in \S2.1.2. The revised description is the following:
+
+\begin{quotation}
+We adopt the value of M\_char =  $10^{12}$ Msun/h used in Hearin \& Watson (2013), who note that their results are insensitive to the precise value of M\_char used. The empirical and physical motivation for M\_char are described in detail in \S6.3 of Hearin \& Watson (2013). Briefly, there is empirical support for a characteristic halo mass above which star formation is highly inefficient:  $\sim10^{12}$ Msun/h
+is the halo mass at which the SHMR peaks, falling off rapidly at higher halo masses (Behroozi et al. 2013; Yang et al. 2012, 2013; Moster et al. 2013; Watson \& Conroy 2013), and Behroozi et al. (2012a) have shown that this mass remains essentially constant throughout much of cosmic history.
+\end{quotation}
 
 \noindent \reftxt{
 Is the shaded are beneath the curves in Fig.\ 1 representative of something? (I understand that the upper limit is set by value of z\_starve for that halo's accretion history).}
@@ -41,27 +52,47 @@ We have added the following to the caption: ``The shaded region below each curve
 \noindent \reftxt{
 In calibrating the parameters of the model, the projected correlation function, w\_p, of DECaLS galaxies is used (Eq.\ 6).\ I am curious to know how different the conclusions of this paper might look had the redshift-space CF been used instead.\ The redshift-space version, by virtue of including galaxy velocities, will likely lead to a different galaxy-halo connection that incorporates the velocity dispersion of subhalos--presumably this additional information would enable a stronger constraint on which subhalos host LRGs? Are the uncertainties due to photometric redshift errors too big an issue to enable such an analysis?}
 
-Yes, the typical photometric redshift error of TODO are too large with respect to typical subhalo velocity dispersion of ~500 km/s to enable...
+Yes, the typical uncertainty of photometric redshifts used for this work is on the order of several thousand km/s, which is too large with respect to typical subhalo velocity dispersion of ~500 km/s to enable this type of analysis.
 
 \noindent \reftxt{
 In Figs.\ 4 and 5, I note that the mock catalogs systematically underpredict w\_p (for r\_p $<$ 1 Mpc/h) compared to both the z- and W1-band parent galaxy samples.\ This seems most apparent in the lowest magnitude bin.\ I assume these scales (i.e.\ the one-halo regime) was also used in the fitting? Perhaps the authors could elaborate on the reason why this is further.}
 
 elaborate at end of S3.3
 
+We have added the following to the second to last paragraph in \S3.3 to emphasize that the shaded regions in Figures 4 and 5 ($\rp < 0.1\ \Mpch$) where not used for model fitting:
+
+\begin{quotation}
+Note that the shaded regions in Figures~\ref{fig:wp_mag_bins_ir} and \ref{fig:wp_mag_bins_opt} at $\rp < 0.1\ \Mpch$ denotes measurements not used for model fitting.
+\end{quotation}
+
 \noindent \reftxt{
 At the end of Section 3.4, the authors come to the conclusion that the clustering predicted in the mocks suggests little correlation between z\_starve and color.\ What if another proxy for halo age--such as the redshift at which 50\% of the final-day mass is assembled, or indeed halo concentration--is used instead? The latter, in particular, would be interesting to consider.\ As the authors suggest later on, one reason halo and galaxy properties may decorrelate is to to the effects of feedback at late times.\ Hydrodynamical simulations suggest that the growth (and, consequently, the effect) of SMBHs is connected with the binding energy of the host DM halo (see, e.g., arXiv:1908.1138).}
 
-Given that assigning mock colors at random (i.e.\ with no correlation between galaxy color and a halo age proxy) still generally overpredicts the clustering of LRGs relative to the data (or has no effect in the case of optical LRGs in the IR model, where the prediction already matches the data on two-halo scales), it is difficult to see how a different age proxy could result in predictions that are closer to the data. Additionally, halo concentration is already a component of \zstarve.
+Given that assigning mock colors at random (i.e.\ with no correlation between galaxy color and a halo age proxy) still generally overpredicts the clustering of LRGs relative to the data (or has no effect in the case of optical LRGs in the IR model, where the prediction already matches the data on two-halo scales), it is difficult to see how a different age proxy could result in predictions that are closer to the data. Additionally, halo concentration is already factored into the definition of \zstarve via \zform (Equation 3).
 
 \noindent \reftxt{
 LRG-like populations have sometimes been defined by simply rank-ordering objects by halo/stellar mass to some fixed number density to represent the ``brightest/reddest galaxies".\ This clearly misses many of the nuances of the DESI target selection as performed in this paper.\ In this respect, it would be interesting to see in Fig.\ 10 what the predicted r\_p x w\_p would be when simply ranking subhalos by V\_peak until one reaches the same number density of LRGs.\ Can such a curve be added to this Figure (or discussed in the text)? I think it would be useful for the modeling community.}
 
+zsim = 0.523
+W1	IR	(0.1,0.2,0.3)	130
+z	IR	0.2			130
+W1	opt	0.05			120
+z	opt	0.1			120
+
 add discussion to the text (don't change figure)
+
+What is LRG clustering signal if mock LRG sample constructed by:
+- start with (sub)halo catalog
+- get number density of data LRG sample
+- for 2D array of SHAM scatter and LOS scatter parameter values:
+  - rank subhalos by Vpeak up to LRG number density
 
 \noindent \reftxt{
 In a similar vein, what does the radial distribution of satellite LRGs look like in the models corresponding to Fig.\ 10? In particular, are they representable by halo NFW profiles (with some modification)?}
 
-check this
+need to scale each halo distribution by Rvir
+
+The radial distribution of mock satellite LRGs comes directly from the MDPL2 DM simulation we used. We have TODO
 
 Additionally, 
 \begin{quotation}
