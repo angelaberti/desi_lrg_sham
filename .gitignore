@@ -16,10 +16,12 @@
 *.bbl
 *.brf
 *.blg
+*.zip
 
 *.ipynb_checkpoints/sandbox-checkpoint.ipynb
 *.ipynb_checkpoints/*
 
+manuscript/
 figures/
 clustering/
 synthetic_photometry_wilber.ipynb
